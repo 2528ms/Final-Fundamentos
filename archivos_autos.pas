@@ -9,30 +9,28 @@ interface
              st30=string[30];
              st100=string[100];
 
-
-
-             r_autos=record
+             r_auto=record
                      marca:st30;
                      modelo:st30;
-                     patente:SHORTSTRING;
-                     dni_usuario: integer;
+                     patente:st20;
                      tipo:integer;
-                     combustible:integer;
+                     combustible:st20;
+                     estado_auto:boolean;
                      end;
-         t_autos = file of r_autos;
+         t_autos = file of r_auto;
 
          procedure abrir_archivo_auto(var arch:t_autos; nom_arch:string);
-         procedure leer_auto(var arch:t_autos; nom_arch:string; var pos:integer; var dato_leido:r_autos);
-         procedure guardar_auto(var arch:t_autos ; nom_arch:string ; var escribir_dato:r_autos);
+         procedure leer_auto(var arch:t_autos; nom_arch:string; var pos:integer; var dato_leido:r_auto);
+         procedure guardar_auto(var arch:t_autos ; nom_arch:string ; var escribir_dato:r_auto);
          procedure modificar_auto(var arch:t_autos; nom_arch:string ;pos:integer);
-         procedure busqueda_patente_auto(var arch:t_autos; nom_arch:string; buscado:st20; var pos:integer);
-         procedure busqueda_dni_usuario(var arch:t_autos; nom_arch:string; buscado:integer; var pos:integer);
+         procedure busqueda_marca(var arch:t_autos; nom_arch:string; buscado:st20; var pos:integer);
+         procedure busqueda_patente(var arch:t_autos; nom_arch:string; buscado:st20; var pos:integer);
+         procedure alta_auto(var arch:t_autos; nom_arch:string; var reg:r_auto);
          procedure baja_auto(var arch:t_autos; nom_arch:string; var pos:integer);
-         procedure alta_auto(var arch:t_autos; nom_arch:string; var reg:r_autos);
+         procedure alta_estado_auto(var arch:t_autos; nom_arch:string; var pos:integer);
          procedure eliminar_archivo_auto(var arch:t_autos);
 
 implementation
-         CONST item = true;
               procedure abrir_archivo_auto(var arch:t_autos;  nom_arch:string); //Abre archivo de tipo texto en modo escritura que borra el contenido y escribe
               begin
                    assign(arch, nom_arch);
@@ -43,7 +41,7 @@ implementation
                       rewrite(arch); //Si la directiva {$I-} devuelve un valor distinto de cero quiere decir que no existe el fichero o hay un problema.
                    //close(arch);
               end;
-              procedure leer_auto(var arch:t_autos; nom_arch:string; var pos:integer; var dato_leido:r_autos); //Lee archivo de tipo texto
+              procedure leer_auto(var arch:t_autos; nom_arch:string; var pos:integer; var dato_leido:r_auto); //Lee archivo de tipo texto
               begin
                    abrir_archivo_auto(arch, nom_arch);
                    seek(arch, pos);                  //seek posiciona el puntero en la posicion que indica el segundo parametro
@@ -51,7 +49,7 @@ implementation
                    close(arch);
               end;
 
-              procedure guardar_auto(var arch:t_autos; nom_arch:string ; var escribir_dato:r_autos); //Escribe en archivo de tipo texto
+              procedure guardar_auto(var arch:t_autos; nom_arch:string ; var escribir_dato:r_auto); //Escribe en archivo de tipo texto
               begin
                    abrir_archivo_auto(arch, nom_arch);
                    seek(arch, filesize(arch));
@@ -62,13 +60,13 @@ implementation
               procedure modificar_auto(var arch:t_autos; nom_arch:string ;pos:integer);
               var
                  x,y,i:integer;
-                 reg:r_autos;
+                 reg:r_auto;
                  control:char;
                  validacion:integer;
               begin
                    clrscr;
                    leer_auto(arch, nom_arch, pos, reg);
-                   if item then
+                   if reg.estado_auto then
                    begin
                     clrscr;
                  textcolor (blue);
@@ -149,6 +147,7 @@ implementation
                                        writeln('              ');
                                        gotoxy(29,4);
                                        writeln(reg.marca);
+                                       reg.estado_auto:=true;
                                        abrir_archivo_auto(arch, nom_arch);
                                        seek(arch, pos);
                                        write(arch, reg);
@@ -163,6 +162,7 @@ implementation
                                        writeln('              ');
                                        gotoxy(32,5);
                                        writeln(reg.modelo);
+                                       reg.estado_auto:=true;
                                        abrir_archivo_auto(arch, nom_arch);
                                        seek(arch, pos);
                                        write(arch, reg);
@@ -200,6 +200,7 @@ implementation
                                          writeln('              ');
                                          gotoxy(31,6);
                                          writeln(reg.tipo);
+                                         reg.estado_auto:=true;
                                          abrir_archivo_auto(arch, nom_arch);
                                          seek(arch, pos);
                                          write(arch, reg);
@@ -222,7 +223,7 @@ implementation
                                                   begin
                                                        textcolor(red);
                                                        gotoxy(21,10);
-                                                       writeln('Debe ingresar solo numeros.');
+                                                       writeln('Debe ingresar tipo de combustible.');
                                                        gotoxy(21,11);
                                                        writeln('Presione enter para intentar de nuevo.');
                                                        textcolor(white);
@@ -237,6 +238,7 @@ implementation
                                          writeln('              ');
                                          gotoxy(30,7);
                                          writeln(reg.combustible);
+                                         reg.estado_auto:=true;
                                          abrir_archivo_auto(arch, nom_arch);
                                          seek(arch, pos);
                                          write(arch, reg);
@@ -252,13 +254,34 @@ implementation
                           end;
               end;
 
-              procedure busqueda_patente_auto(var arch:t_autos; nom_arch:string; buscado:st20; var pos:integer);
+              procedure busqueda_marca(var arch:t_autos; nom_arch:string; buscado:st20; var pos:integer);
               var
-                 reg_aux:r_autos;
+                 reg_aux:r_auto;
                  i:integer;
               begin
                    i:=0;
                    pos := -1;
+                   abrir_archivo_auto(arch, nom_arch);
+                   while not eof(arch) do
+                   begin
+                        read(arch, reg_aux);
+                        if reg_aux.marca = buscado then
+                           begin
+                                pos:=i;
+                           end;
+                        i:=i+1;
+                        seek(arch, i);
+                   end;
+                   close(arch);
+              end;
+
+              procedure busqueda_patente(var arch:t_autos; nom_arch:string; buscado:st20; var pos:integer);
+              var
+                 reg_aux:r_auto;
+                 i:integer;
+              begin
+                   i:=0;
+                   pos:=-1;
                    abrir_archivo_auto(arch, nom_arch);
                    while not eof(arch) do
                    begin
@@ -273,39 +296,31 @@ implementation
                    close(arch);
               end;
 
-              procedure busqueda_dni_usuario(var arch:t_autos; nom_arch:string; buscado:integer; var pos:integer);
-              var
-                 reg_aux:r_autos;
-                 i:integer;
-              begin
-                   i:=0;
-                   pos:=-1;
-                   abrir_archivo_auto(arch, nom_arch);
-                   while not eof(arch) do
-                   begin
-                        read(arch, reg_aux);
-                        if reg_aux.dni_usuario = buscado then
-                           begin
-                                pos:=i;
-                           end;
-                        i:=i+1;
-                        seek(arch, i);
-                   end;
-                   close(arch);
-              end;
-
               procedure baja_auto(var arch:t_autos; nom_arch:string; var pos:integer);
               var
-                 reg:r_autos;
+                 reg:r_auto;
               begin
                    leer_auto(arch, nom_arch, pos, reg);
+                   reg.estado_auto:=false;
                    abrir_archivo_auto(arch, nom_arch);
                    seek(arch, pos);
                    write(arch, reg);
                    close(arch);
               end;
 
-              procedure alta_auto(var arch:t_autos; nom_arch:string; var reg:r_autos);
+              procedure alta_estado_auto(var arch:t_autos; nom_arch:string; var pos:integer);
+              var
+                 reg:r_auto;
+              begin
+                   leer_auto(arch, nom_arch, pos, reg);
+                   reg.estado_auto:=true;
+                   abrir_archivo_auto(arch, nom_arch);
+                   seek(arch, pos);
+                   write(arch, reg);
+                   close(arch);
+              end;
+
+              procedure alta_auto(var arch:t_autos; nom_arch:string; var reg:r_auto);
               var
                  posi,x,y,i:integer;
                  control:char;
@@ -349,21 +364,23 @@ implementation
                    textcolor (white);
                    posi:=-1;
                    gotoxy(63,2);
-                   writeln('Marca automovil: ');
+                   writeln('Alta de Auto');
                    gotoxy(45,4);
-                   writeln('Modelo automovil: ');
+                   writeln('Marca del automovil: ');
                    gotoxy(45,5);
-                   writeln('PATENTE: ');
+                   writeln('Modelo ');
                    gotoxy(45,6);
-                   writeln('Tipo: ');
+                   writeln('Patente: ');
                    gotoxy(45,7);
-                   writeln('Combustible: ');
+                   writeln('Tipo: ');
                    gotoxy(45,8);
+                   writeln('Combustible: ');
+                   gotoxy(64,4);
                    readln(asd);
-                   busqueda_patente_auto(arch, nom_arch, asd, posi);
+                   busqueda_marca(arch, nom_arch, asd, posi);
                    if posi = -1 then
                       begin
-                           reg.modelo:=asd;
+                           reg.marca:=asd;
                            repeat
                                  gotoxy(50,5);
                                  writeln('                                             ');
@@ -374,12 +391,12 @@ implementation
                                  validacion:=ioresult();
                                  if validacion=0 then
                                     begin
-                                         busqueda_patente_auto(arch, nom_arch, reg.modelo, posi);
+                                         busqueda_patente(arch, nom_arch, reg.patente, posi);
                                          if posi>-1 then
                                             begin
                                                  gotoxy(45,10);
                                                  textcolor (red);
-                                                 writeln('La Patente ya esta registrado. Debe ingresar otro.');
+                                                 writeln('El DNI ya esta registrado. Debe ingresar otro.');
                                                  textcolor (white);
                                             end;
                                          end
@@ -400,7 +417,7 @@ implementation
                                         writeln('                                        ');
                                         gotoxy(55,7);
                                         {$I-}
-                                             readln(reg.tipo);
+                                             readln(reg.patente);
                                         {$I+}
                                         validacion:=ioresult();
                                         if validacion<>0 then
@@ -413,6 +430,25 @@ implementation
                                    until validacion=0;
                                    gotoxy(45,10);
                                    writeln('                                              ');
+                                   repeat
+                                          gotoxy(62,8);
+                                          writeln('                                  ');
+                                          gotoxy(62,8);
+                                         {$I-}
+                                              readln(reg.tipo);
+                                         {$I+}
+                                         validacion:=ioresult();
+                                         if validacion<>0 then
+                                            begin
+                                                gotoxy(45,10);
+                                                textcolor (red);
+                                                writeln('Debe ingresar solo numeros');
+                                                textcolor (white);
+                                            end;
+                                   until validacion=0;
+                                   gotoxy(45,10);
+                                   writeln('                                              ');
+                           reg.estado_auto:=true;
                            guardar_auto(arch, nom_arch, reg);
                            gotoxy(45,10);
                            textcolor (green);
@@ -423,11 +459,11 @@ implementation
                          else
                              begin
                                   leer_auto(arch, nom_arch, posi, reg);
-                                  if item then
+                                  if (reg.estado_auto) then
                                      begin
                                           repeat
                                                 gotoxy(45,10);
-                                                writeln('Este auto ya esta registrado.', #168'Que desea hacer?');
+                                                writeln('Este Auto ya esta registrado.', #168'Que desea hacer?');
                                                 gotoxy(45,11);
                                                 writeln('1: Modificar');
                                                 gotoxy(45,12);
@@ -484,12 +520,12 @@ implementation
                                                                                validacion:=ioresult();
                                                                                if validacion=0 then
                                                                                   begin
-                                                                                       busqueda_patente_auto(arch, nom_arch, reg.patente, posi);
+                                                                                       busqueda_patente(arch, nom_arch, reg.patente, posi);
                                                                                        if posi>-1 then
                                                                                           begin
                                                                                                gotoxy(45,10);
                                                                                                textcolor(red);
-                                                                                               writeln('La patente ya esta registrado. Debe ingresar otro');
+                                                                                               writeln('La patente ya esta registrada. Debe ingresar otra');
                                                                                                textcolor(white);
                                                                                           end;
                                                                                   end
@@ -504,11 +540,29 @@ implementation
                                                                          gotoxy(45,10);
                                                                          writeln('                                              ');
                                                                          gotoxy(56,6);
-                                                                         readln(reg.marca);
+                                                                         readln(reg.modelo);
                                                                          repeat
                                                                                 gotoxy(55,7);
                                                                                 writeln('                                       ');
                                                                                 gotoxy(55,7);
+                                                                               {$I-}
+                                                                                    readln(reg.patente);
+                                                                               {$I+}
+                                                                               validacion:=ioresult();
+                                                                               if validacion<>0 then
+                                                                                  begin
+                                                                                       gotoxy(45,10);
+                                                                                       textcolor(red);
+                                                                                       writeln('Debe ingresar solo numeros');
+                                                                                       textcolor(white);
+                                                                                  end;
+                                                                         until validacion=0;
+                                                                         gotoxy(45,10);
+                                                                         writeln('                                         ');
+                                                                         repeat
+                                                                               gotoxy(62,8);
+                                                                               writeln('                                  ');
+                                                                               gotoxy(62,8);
                                                                                {$I-}
                                                                                     readln(reg.tipo);
                                                                                {$I+}
@@ -522,9 +576,8 @@ implementation
                                                                                   end;
                                                                          until validacion=0;
                                                                          gotoxy(45,10);
-                                                                         writeln('                                         ');
-                                                                         gotoxy(45,10);
                                                                          writeln('                                      ');
+                                                                         reg.estado_auto:=true;
                                                                          guardar_auto(arch, nom_arch, reg);
                                                                          gotoxy(45,10);
                                                                          textcolor(green);
@@ -558,7 +611,7 @@ implementation
                                      begin
                                          repeat
                                                gotoxy(45,10);
-                                               writeln('Este auto esta registrado pero esta dada de baja.');
+                                               writeln('Este Auto esta registrado pero esta dada de baja.');
                                                gotoxy(45,11);
                                                writeln('1: Dar de alta');
                                                gotoxy(45,12);
@@ -573,6 +626,7 @@ implementation
                                                writeln('                                              ');
                                                if (control = '1') then
                                                   begin
+                                                       alta_estado_auto(arch, nom_arch, posi);
                                                        gotoxy(45,10);
                                                        textcolor(green);
                                                        writeln('Listo!');

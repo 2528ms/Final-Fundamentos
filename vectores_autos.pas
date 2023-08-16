@@ -3,7 +3,7 @@ unit vectores_autos;
 interface
          uses crt, archivos_autos;
          const
-              N=1000;
+              N=10;
          type
              r_ordenar_autos = record
                                    campo:string;
@@ -29,7 +29,7 @@ implementation
     end;
     procedure ordenar_marca_autos(var arch:t_autos; nom_arch:string; var vec:v_autos);
     var
-       reg:r_autos;
+       reg:r_auto;
        aux:r_ordenar_autos;
        pos:integer;
        i,j:integer;
@@ -67,7 +67,7 @@ implementation
     procedure listado_autos(var arch:t_autos ; nom_arch:string; v:v_autos);
               var
                  i:integer;
-                 reg:r_autos;
+                 reg:r_auto;
                  lim,w:integer;
                  control:char;
                  j,y:integer;
@@ -78,9 +78,9 @@ implementation
                    lim:=filesize(arch);
                    close(arch);
                    gotoxy(22,1);
-                   writeln ('Listado de los autos ordenado por marca');
+                   writeln ('Listado de los directores ordenado por nombre de director');
                    Gotoxy (1,2);
-                   writeln ('| Marca |      Modelo      |     Patente     |     Tipo     | Combustible |');
+                   writeln ('| Marca del auto |      Modelo      |     Patente     |     Tipo     | Combustible |');
                    Gotoxy (1,3);
                    Writeln ('________________________________________________________________________________________________');
                    for i:=1 to lim do
@@ -91,6 +91,8 @@ implementation
                                      begin
                                           leer_auto(arch, nom_arch, pos_archivo, reg);
                                      end;
+                                if (reg.estado_auto) then
+                                   begin
                                         Inc (w);
                                         Gotoxy (2,w);
                                         writeln (reg.marca);
@@ -105,6 +107,7 @@ implementation
                                         Inc (w);
                                         Gotoxy (1,w);
                                         Writeln ('________________________________________________________________________________________________');
+                                   end;
                            end
                               else
                                   begin
@@ -112,6 +115,8 @@ implementation
                                             begin
                                                  leer_auto(arch, nom_arch, pos_archivo, reg);
                                             end;
+                                       if (reg.estado_auto) then
+                                          begin
                                                Inc (w);
                                                Gotoxy (2,w);
                                                writeln (reg.marca);
@@ -126,6 +131,7 @@ implementation
                                                Inc (w);
                                                Gotoxy (1,w);
                                                Writeln ('________________________________________________________________________________________________');
+                                          end;
                                        writeln('s: Siguiente; a: Volver al principio; ESC: salir');
                                     gotoxy(1,1);
                                     repeat
@@ -153,7 +159,7 @@ implementation
                                                                  y:=y+2;
                                                             end;
                                                         w:=3;
-                                                        i:=0;
+                                                        //i:=0; esto lo cambie 10/8 revisar
                                                    end;
                                                #27:begin
                                                         exit;
@@ -179,7 +185,7 @@ implementation
                                                                  y:=y+2;
                                                             end;
                                                         w:=3;
-                                                        i:=0;
+                                                        //i:=0; esto lo cambie el 10/8 revisar
                                                    end;
                                                #27:begin
                                                         exit;
@@ -195,5 +201,4 @@ implementation
 
 
 begin
-
 end.
