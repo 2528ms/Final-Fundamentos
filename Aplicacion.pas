@@ -1,7 +1,9 @@
+
 Program Aplicacion;
 
 Uses crt, menu;
 
-begin
-    menu_principal;
-end.
+Begin
+  menu_principal;
+  //Coment
+End.
