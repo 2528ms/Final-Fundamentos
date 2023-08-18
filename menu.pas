@@ -289,9 +289,9 @@ Implementation
                                   writeln ('1:SI');
                                   Gotoxy (78,7);
                                   Writeln ('2:NO');
-                                  Gotoxy (82,16);
+                                  Gotoxy (50,20);
                                   Textcolor (color);
-                                  Writeln ('Desarollado por: Sosa Mariano - Galarza Francisco');
+                                  Writeln ('Alumnos: Sosa Mariano - Galarza Francisco');
                                   Repeat
                                   textcolor (color);
                                   Gotoxy (58,4);

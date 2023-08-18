@@ -78,7 +78,7 @@ implementation
                    lim:=filesize(arch);
                    close(arch);
                    gotoxy(22,1);
-                   writeln ('Listado de los directores ordenado por nombre de director');
+                   writeln ('Listado de autos ordenados por Marca');
                    Gotoxy (1,2);
                    writeln ('| Marca del auto |      Modelo      |     Patente     |     Tipo     | Combustible |');
                    Gotoxy (1,3);

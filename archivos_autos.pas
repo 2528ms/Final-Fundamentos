@@ -13,7 +13,7 @@ interface
                      marca:st30;
                      modelo:st30;
                      patente:st20;
-                     tipo:integer;
+                     tipo:st20;
                      combustible:st20;
                      estado_auto:boolean;
                      end;
@@ -366,25 +366,25 @@ implementation
                    gotoxy(63,2);
                    writeln('Alta de Auto');
                    gotoxy(45,4);
-                   writeln('Marca del automovil: ');
-                   gotoxy(45,5);
-                   writeln('Modelo ');
-                   gotoxy(45,6);
                    writeln('Patente: ');
+                   gotoxy(45,5);
+                   writeln('Marca ');
+                   gotoxy(45,6);
+                   writeln('Modelo: ');
                    gotoxy(45,7);
                    writeln('Tipo: ');
                    gotoxy(45,8);
                    writeln('Combustible: ');
-                   gotoxy(64,4);
-                   readln(asd);
-                   busqueda_marca(arch, nom_arch, asd, posi);
+               //     gotoxy(64,4);
+               //     readln(asd);
+               //     busqueda_patente(arch, nom_arch, asd, posi);
                    if posi = -1 then
                       begin
-                           reg.marca:=asd;
+                           //reg.patente:=asd;
                            repeat
-                                 gotoxy(50,5);
+                                 gotoxy(60,4);
                                  writeln('                                             ');
-                                 gotoxy(50,5);
+                                 gotoxy(60,4);
                                  {$I-}
                                       readln(reg.patente);
                                  {$I+}
@@ -396,7 +396,7 @@ implementation
                                             begin
                                                  gotoxy(45,10);
                                                  textcolor (red);
-                                                 writeln('El DNI ya esta registrado. Debe ingresar otro.');
+                                                 writeln('La patente ya esta registrada. Debe ingresar otra.');
                                                  textcolor (white);
                                             end;
                                          end
@@ -410,39 +410,75 @@ implementation
                            until (posi=-1) and (validacion=0);
                            gotoxy(45,10);
                            writeln('                                              ');
-                           gotoxy(56,6);
-                           readln(reg.modelo);
+                         //   gotoxy(56,4);
+                         //   readln(reg.patente);
                            repeat
-                                        gotoxy(55,7);
+                                        gotoxy(60,5);
                                         writeln('                                        ');
-                                        gotoxy(55,7);
+                                        gotoxy(60,5);
                                         {$I-}
-                                             readln(reg.patente);
+                                             readln(reg.marca);
                                         {$I+}
                                         validacion:=ioresult();
                                         if validacion<>0 then
                                            begin
                                                 gotoxy(45,10);
                                                 textcolor (red);
-                                                writeln('Debe ingresar solo numeros');
+                                                writeln('Ingresar marca nuevamente');
                                                 textcolor (white);
                                            end;
                                    until validacion=0;
                                    gotoxy(45,10);
                                    writeln('                                              ');
                                    repeat
-                                          gotoxy(62,8);
+                                          gotoxy(60,6);
                                           writeln('                                  ');
-                                          gotoxy(62,8);
+                                          gotoxy(60,6);
                                          {$I-}
-                                              readln(reg.tipo);
+                                              readln(reg.modelo);
                                          {$I+}
                                          validacion:=ioresult();
                                          if validacion<>0 then
                                             begin
                                                 gotoxy(45,10);
                                                 textcolor (red);
-                                                writeln('Debe ingresar solo numeros');
+                                                writeln('Ingresar modelo nuevamente');
+                                                textcolor (white);
+                                            end;
+                                   until validacion=0;
+                                   gotoxy(45,10);
+                                   writeln('                                              ');
+                           repeat
+                                        gotoxy(60,7);
+                                        writeln('                                        ');
+                                        gotoxy(60,7);
+                                        {$I-}
+                                             readln(reg.tipo);
+                                        {$I+}
+                                        validacion:=ioresult();
+                                        if validacion<>0 then
+                                           begin
+                                                gotoxy(45,10);
+                                                textcolor (red);
+                                                writeln('Ingresar tipo nuevamente');
+                                                textcolor (white);
+                                           end;
+                                   until validacion=0;
+                                   gotoxy(45,10);
+                                   writeln('                                              ');
+                                   repeat
+                                          gotoxy(60,8);
+                                          writeln('                                  ');
+                                          gotoxy(60,8);
+                                         {$I-}
+                                              readln(reg.combustible);
+                                         {$I+}
+                                         validacion:=ioresult();
+                                         if validacion<>0 then
+                                            begin
+                                                gotoxy(45,10);
+                                                textcolor (red);
+                                                writeln('Ingresar combustible nuevamente');
                                                 textcolor (white);
                                             end;
                                    until validacion=0;
@@ -451,9 +487,12 @@ implementation
                            reg.estado_auto:=true;
                            guardar_auto(arch, nom_arch, reg);
                            gotoxy(45,10);
-                           textcolor (green);
-                           writeln('Listo!');
-                           textcolor (white);
+                           Textcolor (green);
+                           writeln('Auto creado correctamente!');
+                           Textcolor (white);
+                           gotoxy(45,18);
+                           writeln('tocar cualquier tecla para volver al menu');
+                           textcolor(white);
                            readkey;
                       end
                          else
