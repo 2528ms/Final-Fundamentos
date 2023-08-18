@@ -352,6 +352,7 @@ implementation
                                                  textcolor (red);
                                                  writeln('El DNI del usuario ingresado ya existe, por favor ingrese uno nuevo.');
                                                  textcolor (white);
+
                                             end;
                                     end
                                        else
@@ -375,7 +376,9 @@ implementation
                            gotoxy(45,10);
                            textcolor (green);
                            writeln('Usuario creado con Exito!');
+                           gotoxy(45,12);
                            textcolor (white);
+                           writeln('Presione cualquier tecla para volver al menu anterior');
                            readkey;
                       end
                          else

@@ -487,9 +487,12 @@ implementation
                            reg.estado_auto:=true;
                            guardar_auto(arch, nom_arch, reg);
                            gotoxy(45,10);
-                           textcolor (green);
-                           writeln('Listo!');
-                           textcolor (white);
+                           Textcolor (green);
+                           writeln('Auto creado correctamente!');
+                           Textcolor (white);
+                           gotoxy(45,18);
+                           writeln('tocar cualquier tecla para volver al menu');
+                           textcolor(white);
                            readkey;
                       end
                          else
