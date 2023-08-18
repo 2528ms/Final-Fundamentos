@@ -79,11 +79,11 @@ implementation
                    lim:=filesize(arch);
                    close(arch);
                    gotoxy(54,1);
-                   writeln('Listado de las obras ordenado por nombre de obra');
+                   writeln('Listado de Turnos');
                    Gotoxy (1,2);
-                   writeln ('|        Nombre        |  DNI usuario  |   Patente auto   |  Motivo Servicio |    Codigo Turno   |');
+                   writeln ('|        Fecha        |  DNI usuario  |   Patente auto   |  Motivo Servicio |    Codigo Turno   |');
                    Gotoxy (1,3);
-                   Writeln ('__________________________________________________________________________________________________________');
+                   Writeln ('_________________________________________________________________________________________________');
                    for i:=1 to lim do
                    begin
                         if (i mod 17)<> 0 then
@@ -99,13 +99,13 @@ implementation
                                              writeln(reg.dia_hora);
                                              Gotoxy (25,w);
                                              writeln(reg.dni_usuario);
-                                             Gotoxy (36,w);
+                                             Gotoxy (42,w);
                                              writeln(reg.patente);
-                                             Gotoxy (48,w);
+                                             Gotoxy (61,w);
                                              Writeln (reg.motivo);
-                                             Gotoxy (56,w);
+                                             Gotoxy (80,w);
                                              Writeln (reg.codigo_turno);
-                                              Writeln ('____________________________________________________________________________________________________________________________________________________________________');
+                                             Writeln ('_________________________________________________________________________________________________');
                                         end;
                            end
                               else
@@ -116,18 +116,18 @@ implementation
                                        end;
                                        if reg.estado_turno then
                                           begin
-                                               Inc (w);
-                                               Gotoxy (2,w);
-                                               writeln(reg.dia_hora);
-                                               Gotoxy (25,w);
-                                               writeln(reg.dni_usuario);
-                                               Gotoxy (36,w);
-                                               writeln(reg.patente);
-                                               Gotoxy (48,w);
-                                               Writeln (reg.motivo);
-                                               Gotoxy (56,w);
-                                               Writeln (reg.codigo_turno);
-                                              Writeln ('____________________________________________________________________________________________________________________________________________________________________');
+                                                  Inc (w);
+                                                  Gotoxy (2,w);
+                                                  writeln(reg.dia_hora);
+                                                  Gotoxy (25,w);
+                                                  writeln(reg.dni_usuario);
+                                                  Gotoxy (42,w);
+                                                  writeln(reg.patente);
+                                                  Gotoxy (61,w);
+                                                  Writeln (reg.motivo);
+                                                  Gotoxy (80,w);
+                                                  Writeln (reg.codigo_turno);
+                                                  Writeln ('_________________________________________________________________________________________________');
                                           end;
                                        writeln('s: Siguiente; a: Volver al principio; ESC: salir');
                                        gotoxy(1,1);

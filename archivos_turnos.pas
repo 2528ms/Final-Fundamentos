@@ -36,7 +36,7 @@ interface
          procedure alta_turno(var arch:t_turnos; var arch_u:t_usuarios; var arch_a:t_autos; nom_arch_a:string ;nom_arch_u:string; nom_arch:string; var reg:r_turno);
          procedure baja_turno(var arch:t_turnos; nom_arch:string; var pos:integer);
          procedure alta_estado_turno(var arch:t_turnos; nom_arch:string; var pos:integer);
-         procedure busqueda_patente(var arch:t_turnos; nom_arch:string; buscado:st20; var pos:integer);
+         procedure busqueda_patente(var arch:t_autos; nom_arch_a:string; buscado:st20; var pos:integer);
         // procedure busqueda_dni_usuario(var arch:t_turnos; nom_arch:string; buscado:integer; var pos:integer);
          //procedure estadistica_museo(var arch:t_turnos; nom_arch:string; buscado:integer; var pos:integer);
          procedure eliminar_archivo_turno(var arch:t_turnos);
@@ -491,7 +491,7 @@ implementation
                                   validacion:=ioresult();
                                   if validacion=0 then
                                      begin
-                                          busqueda_patente(arch, nom_arch, reg.patente, posi);
+                                          busqueda_patente(arch_a, nom_arch_a, reg.patente, posi);
                                           if posi>-1 then
                                              begin
                                                   leer_auto(arch_a, nom_arch_a, posi, reg_a);
@@ -824,74 +824,96 @@ implementation
           //          close(arch);
           //     end;
 
-              procedure busqueda_patente(var arch:t_turnos; nom_arch:string; buscado:st20; var pos:integer);
+          procedure busqueda_patente(var arch:t_autos; nom_arch_a:string; buscado:st20; var pos:integer);
               var
-                 reg_aux:r_turno;
-                 i,y,x,z:integer;
+                 reg_aux:r_auto;
+                 i:integer;
               begin
-                   y:=6;
                    i:=0;
-                   pos := -1;
-                   abrir_archivo_turno(arch, nom_arch);
-                   gotoxy (61,6);
-                   writeln('Patente: ');
+                   pos:=-1;
+                   abrir_archivo_auto(arch, nom_arch_a);
                    while not eof(arch) do
                    begin
                         read(arch, reg_aux);
                         if reg_aux.patente = buscado then
                            begin
-                                if reg_aux.estado_turno then
-                                begin
-                                     gotoxy (68,y);
-                                     writeln('*', reg_aux.dia_hora);
-                                     pos:=1;
-                                     y:=y+1;
-                                end;
+                                pos:=i;
                            end;
-                   i:=i+1;
-                   seek(arch, i);
+                        i:=i+1;
+                        seek(arch, i);
                    end;
-                   textcolor (blue);
-                   x:=51;
-                   z:=2;
-                   For i:=1 to y+2 do
-                       Begin
-                            Gotoxy (x,z);
-                            Writeln('|');
-                            inc (z);
-                       End;
-                   x:=52;
-                   z:=y+3;
-                   For i:=1 to 23 do
-                       Begin
-                            Gotoxy (x,z);
-                            Writeln ('_');
-                            x:=x+2
-                       End;
-                   x:=97;
-                   z:=2;
-                   For i:=1 to y+2 do
-                       Begin
-                            Gotoxy (x,z);
-                            Writeln('|');
-                            inc (z);
-                       End;
-                   x:=52;
-                   z:=1;
-                   For i:=1 to 23 do
-                       Begin
-                            Gotoxy (x,z);
-                            Writeln ('_');
-                            x:=x+2
-                       End;
-                   textcolor (white);
                    close(arch);
-                   gotoxy(51,y+4);
-                   textcolor(yellow);
-                   writeln('Presione enter para salir.');
-                   textcolor(white);
-                   readkey;
               end;
+
+
+          //     procedure busqueda_patente(var arch:t_turnos; nom_arch:string; buscado:st20; var pos:integer);
+          //     var
+          //        reg_aux:r_turno;
+          //        i,y,x,z:integer;
+          //     begin
+          //      //     y:=6;
+          //      //     i:=0;
+          //          pos := -1;
+          //          abrir_archivo_turno(arch, nom_arch);
+          //      //     gotoxy (61,6);
+          //      //     writeln('Patente: ');
+          //          while not eof(arch) do
+          //          begin
+          //               read(arch, reg_aux);
+          //               if reg_aux.patente = buscado then
+          //                  begin
+          //                       if reg_aux.estado_turno then
+          //                       begin
+          //                            gotoxy (68,y);
+          //                            writeln('*', reg_aux.dia_hora);
+          //                            pos:=1;
+          //                          //   y:=y+1;
+          //                       end;
+          //                  end;
+          //          i:=i+1;
+          //          seek(arch, i);
+          //          end;
+          //          textcolor (blue);
+          //          x:=51;
+          //          z:=2;
+          //          For i:=1 to y+2 do
+          //              Begin
+          //                   Gotoxy (x,z);
+          //                   Writeln('|');
+          //                   inc (z);
+          //              End;
+          //          x:=52;
+          //          z:=y+3;
+          //          For i:=1 to 23 do
+          //              Begin
+          //                   Gotoxy (x,z);
+          //                   Writeln ('_');
+          //                   x:=x+2
+          //              End;
+          //          x:=97;
+          //          z:=2;
+          //          For i:=1 to y+2 do
+          //              Begin
+          //                   Gotoxy (x,z);
+          //                   Writeln('|');
+          //                   inc (z);
+          //              End;
+          //          x:=52;
+          //          z:=1;
+          //          For i:=1 to 23 do
+          //              Begin
+          //                   Gotoxy (x,z);
+          //                   Writeln ('_');
+          //                   x:=x+2
+          //              End;
+          //          textcolor (white);
+          //          close(arch);
+          //          gotoxy(51,y+4);
+          //          textcolor(yellow);
+          //          writeln('Presione enter para salir.');
+          //          textcolor(white);
+          //          readkey;
+          //     end;
 
             //   procedure estadistica_museo(var arch:t_turnos; nom_arch:string; buscado:integer; var pos:integer);
             //   var
@@ -1015,6 +1037,7 @@ implementation
           posi,x,y,i:integer;
           control:char;
           asd:integer;
+          aux_hora:st20;
           validacion:integer;
           //reg_u:registro_usuario;
           reg_a:r_auto;
@@ -1067,7 +1090,7 @@ implementation
           gotoxy(66,2);
           writeln('Alta de Turno');
           gotoxy(45,4);
-          writeln('Dia y hora: ');
+          writeln('Fecha del turno: ');
           gotoxy(45,5);
           writeln('DNI del usuario: ');
           gotoxy(45,6);
@@ -1084,8 +1107,8 @@ implementation
           writeln('motivo: ');
           gotoxy(45,15);
           writeln('Codigo: ');
-          gotoxy(53,4);
-          readln(asd);
+          gotoxy(63,4);
+          readln(aux_hora);
           abrir_archivo_turno(arch, nom_arch); //
           ultima_posicion:=filesize(arch)-1;  // lectura de la posicion del ultimo registro
           close(arch);                        //
@@ -1093,14 +1116,15 @@ implementation
           reg.codigo_turno:=reg_aux_t.codigo_turno+1;                // generar codigo de obra automaticamente
           gotoxy(53,15);
           writeln(reg.codigo_turno);
-          busqueda_turno(arch, nom_arch, asd, posi);
+          //busqueda_turno(arch, nom_arch, reg.codigo_turno, posi);
           if posi = -1 then
                begin
-                    reg.codigo_turno:=asd;
+                    reg.dia_hora:=aux_hora;
+                    // reg.codigo_turno:=asd;
                     repeat
-                         gotoxy(62,5);
+                         gotoxy(63,5);
                          writeln('                                      ');
-                         gotoxy(62,5);
+                         gotoxy(63,5);
                          {$I-}
                               readln(reg.dni_usuario);
                          {$I+}
@@ -1139,7 +1163,7 @@ implementation
                              until validacion = 0;
                              gotoxy(45,16);
                              writeln('                                           ');
-                              busqueda_patente(arch, nom_arch, reg.patente, posi);//hasta aca
+                              busqueda_patente(arch_a, nom_arch_a, reg.patente, posi);//hasta aca
                               if posi>-1 then
                                    begin
                                         leer_auto(arch_a, nom_arch_a, posi, reg_a);
@@ -1168,25 +1192,25 @@ implementation
                                              repeat
                                                   gotoxy(45,16);
                                                   writeln('Presione "s":Service ; "m":Motor; "f":Frenos');
-                                                  gotoxy(51,11);
+                                                  gotoxy(55,11);
                                                   writeln('                             ');
-                                                  gotoxy(51,11);
+                                                  gotoxy(55,11);
                                                   control:=readkey;
                                                   keypressed;
                                                   case control of
                                                        's':begin
                                                                  reg.motivo:='Service';
-                                                                 gotoxy(51,11);
+                                                                 gotoxy(55,11);
                                                                  writeln(reg.motivo);
                                                             end;
                                                        'm':begin
                                                                  reg.motivo:='Motor';
-                                                                 gotoxy(51,11);
+                                                                 gotoxy(55,11);
                                                                  writeln(reg.motivo);
                                                             end;
                                                        'f':begin
-                                                                 reg.motivo:='Freno';
-                                                                 gotoxy(51,11);
+                                                                 reg.motivo:='Frenos';
+                                                                 gotoxy(55,11);
                                                                  writeln(reg.motivo);
                                                             end;
                                                        else
@@ -1304,28 +1328,31 @@ implementation
                                              guardar_turno(arch, nom_arch, reg);
                                              gotoxy(45,16);
                                              Textcolor (green);
-                                             writeln('Listo!');
+                                             writeln('Turno creado correctamente!');
                                              Textcolor (white);
+                                             gotoxy(45,18);
+                                             writeln('tocar cualquier tecla para volver al menu');
+                                             textcolor(white);
                                              readkey;
                                         end;
                                         
-                                             begin
-                                                  gotoxy(45,16);
-                                                  Textcolor (red);
-                                                  writeln('El turno esta dado de baja.');
-                                                  Gotoxy (45,17);
-                                                  Writeln('Dar de alta para continuar');
-                                                  Textcolor (white);
-                                                  readkey;
-                                             end;
+                                             // begin
+                                             //      gotoxy(45,16);
+                                             //      Textcolor (red);
+                                             //      writeln('El auto esta dado de baja.');
+                                             //      Gotoxy (45,17);
+                                             //      Writeln('Dar de alta para continuar');
+                                             //      Textcolor (white);
+                                             //      readkey;
+                                             // end;
                                    end
                                    else
                                         begin
                                              gotoxy(45,16);
                                              Textcolor (red);
-                                             writeln('El turno no esta registrado.');
+                                             writeln('el auto no esta registrado.');
                                              gotoxy(45,17);
-                                             writeln('Registre primero el turno para continuar');
+                                             writeln('Registre primero el auto para continuar');
                                              Textcolor (white);
                                              readkey;
                                         end;

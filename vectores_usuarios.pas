@@ -173,7 +173,7 @@ implementation
                                           writeln(reg.ciudad_usuario);
                                           Gotoxy (62,w);
                                           writeln(reg.tel_usuario);
-                                          Gotoxy (79,w);
+                                          Gotoxy (83,w);
                                           writeln(reg.dni_usuario);
                                           Inc (w);
                                           Gotoxy (1,w);
