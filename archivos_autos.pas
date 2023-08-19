@@ -448,78 +448,86 @@ implementation
                                    until validacion=0;
                                    gotoxy(45,10);
                                    writeln('                                              ');
-                           {repeat
+                              repeat
+                                        gotoxy(45,10);
+                                        writeln('Pulse "A" = Auto ; "C" = Camioneta; "U" = Utilitario.');
                                         gotoxy(60,7);
-                                        writeln('                                        ');
+                                        writeln('                        ');
                                         gotoxy(60,7);
-                                        {$I-}
-                                             {readln(reg.tipo);
-                                        {$I+}
-                                        {validacion:=ioresult();
-                                        if validacion<>0 then
-                                           begin
-                                                gotoxy(45,10);
-                                                textcolor (red);
-                                                writeln('Ingresar tipo nuevamente');
-                                                textcolor (white);
-                                           end;
-                                   until validacion=0;}
-                                  repeat
-                                        gotoxy(45,16);
-                                        writeln('Pulse "N" para nafta; "G" para gasoil; "C" para nafa/gas.');
-                                        gotoxy(51,11);
-                                        writeln('                             ');
-                                        gotoxy(51,11);
                                         control := readkey;
                                         keypressed;
                                         Case control Of 
-                                          'n':
+                                          'a':
                                               Begin
-                                                reg.tipo := 'Nafta';
-                                                gotoxy(51,11);
-                                                writeln(reg.tipo);
-                                              End;
-                                          'g':
-                                              Begin
-                                                reg.tipo := 'Gasoil';
-                                                gotoxy(51,11);
+                                                reg.tipo := 'Auto';
+                                                gotoxy(60,7);
                                                 writeln(reg.tipo);
                                               End;
                                           'c':
                                               Begin
-                                                reg.tipo := 'Nafta y gas';
-                                                gotoxy(51,11);
+                                                reg.tipo := 'Camioneta';
+                                                gotoxy(60,7);
+                                                writeln(reg.tipo);
+                                              End;
+                                          'u':
+                                              Begin
+                                                reg.tipo := 'Utilitario';
+                                                gotoxy(60,7);
                                                 writeln(reg.tipo);
                                               End;
                                           Else
                                             Begin
-                                              gotoxy(45,16);
+                                              gotoxy(45,12);
                                               Textcolor (red);
                                               writeln('La letra ingresada es incorrecta...');
                                               Textcolor (white);
                                             End;
                                         End;
-                                      Until (reg.tipo = 'Nafta') Or (reg.tipo = 'Gasoil') Or (reg.tipo = 'Nafta y gas');
+                                   Until (reg.tipo = 'Auto') Or (reg.tipo = 'Camioneta') Or (reg.tipo = 'Utilitario');
                                    gotoxy(45,10);
-                                   writeln('                                              ');
+                                   writeln('                                                      ');
+                                   gotoxy(45,12);
+                                   writeln('                                                      ');
                                    repeat
-                                          gotoxy(60,8);
-                                          writeln('                                  ');
-                                          gotoxy(60,8);
-                                         {$I-}
-                                              readln(reg.combustible);
-                                         {$I+}
-                                         validacion:=ioresult();
-                                         if validacion<>0 then
-                                            begin
-                                                gotoxy(45,10);
-                                                textcolor (red);
-                                                writeln('Ingresar combustible nuevamente');
-                                                textcolor (white);
-                                            end;
-                                    until validacion=0;
+                                        gotoxy(45,10);
+                                        writeln('Pulse "N" = nafta; "G" = gasoil; "C" = nafa/gas.');
+                                        gotoxy(60,8);
+                                        writeln('                        ');
+                                        gotoxy(60,8);
+                                        control := readkey;
+                                        keypressed;
+                                        Case control Of 
+                                          'n':
+                                              Begin
+                                                reg.combustible := 'Nafta';
+                                                gotoxy(60,8);
+                                                writeln(reg.combustible);
+                                              End;
+                                          'g':
+                                              Begin
+                                                reg.combustible := 'Gasoil';
+                                                gotoxy(60,8);
+                                                writeln(reg.combustible);
+                                              End;
+                                          'c':
+                                              Begin
+                                                reg.combustible := 'Nafta y gas';
+                                                gotoxy(60,8);
+                                                writeln(reg.combustible);
+                                              End;
+                                          Else
+                                            Begin
+                                              gotoxy(45,12);
+                                              Textcolor (red);
+                                              writeln('La letra ingresada es incorrecta...');
+                                              Textcolor (white);
+                                            End;
+                                        End;
+                                   Until (reg.combustible = 'Nafta') Or (reg.combustible = 'Gasoil') Or (reg.combustible = 'Nafta y gas');
                                    gotoxy(45,10);
-                                   writeln('                                              ');
+                                   writeln('                                                  ');
+                                   gotoxy(45,12);
+                                   writeln('                                                  ');
                            reg.estado_auto:=true;
                            guardar_auto(arch, nom_arch, reg);
                            gotoxy(45,10);
