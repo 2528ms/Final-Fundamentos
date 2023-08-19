@@ -448,14 +448,14 @@ implementation
                                    until validacion=0;
                                    gotoxy(45,10);
                                    writeln('                                              ');
-                           repeat
+                           {repeat
                                         gotoxy(60,7);
                                         writeln('                                        ');
                                         gotoxy(60,7);
                                         {$I-}
-                                             readln(reg.tipo);
+                                             {readln(reg.tipo);
                                         {$I+}
-                                        validacion:=ioresult();
+                                        {validacion:=ioresult();
                                         if validacion<>0 then
                                            begin
                                                 gotoxy(45,10);
@@ -463,7 +463,43 @@ implementation
                                                 writeln('Ingresar tipo nuevamente');
                                                 textcolor (white);
                                            end;
-                                   until validacion=0;
+                                   until validacion=0;}
+                                  repeat
+                                        gotoxy(45,16);
+                                        writeln('Pulse "N" para nafta; "G" para gasoil; "C" para nafa/gas.');
+                                        gotoxy(51,11);
+                                        writeln('                             ');
+                                        gotoxy(51,11);
+                                        control := readkey;
+                                        keypressed;
+                                        Case control Of 
+                                          'n':
+                                              Begin
+                                                reg.tipo := 'Nafta';
+                                                gotoxy(51,11);
+                                                writeln(reg.tipo);
+                                              End;
+                                          'g':
+                                              Begin
+                                                reg.tipo := 'Gasoil';
+                                                gotoxy(51,11);
+                                                writeln(reg.tipo);
+                                              End;
+                                          'c':
+                                              Begin
+                                                reg.tipo := 'Nafta y gas';
+                                                gotoxy(51,11);
+                                                writeln(reg.tipo);
+                                              End;
+                                          Else
+                                            Begin
+                                              gotoxy(45,16);
+                                              Textcolor (red);
+                                              writeln('La letra ingresada es incorrecta...');
+                                              Textcolor (white);
+                                            End;
+                                        End;
+                                      Until (reg.tipo = 'Nafta') Or (reg.tipo = 'Gasoil') Or (reg.tipo = 'Nafta y gas');
                                    gotoxy(45,10);
                                    writeln('                                              ');
                                    repeat
@@ -481,7 +517,7 @@ implementation
                                                 writeln('Ingresar combustible nuevamente');
                                                 textcolor (white);
                                             end;
-                                   until validacion=0;
+                                    until validacion=0;
                                    gotoxy(45,10);
                                    writeln('                                              ');
                            reg.estado_auto:=true;
