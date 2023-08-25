@@ -904,13 +904,13 @@ Implementation
                                      repeat
                                            writeln('Ingrese la patente del auto que desea dar de baja: ');
                                            {$I-}
-                                                readln(aux);
+                                                readln(aux_patente);
                                            {$I+}
                                            validacion:=ioresult();
                                            if validacion<>0 then
                                               begin
                                                    textcolor(red);
-                                                   writeln('Debe ingresar solo numeros.');
+                                                   writeln('Debe ingresar un tipo de dato alfanumerico.');
                                                    textcolor(white);
                                               end;
                                      until validacion=0;
@@ -929,10 +929,13 @@ Implementation
                                             begin
                                                  textcolor(red);
                                                  writeln('El auto no esta registrado.');
-                                                 writeln('Presione cualquier tecla para continuar...');
+                                                 writeln('Presione ESC. para salir o enter para volver a intentar..');
                                                  textcolor(white);
-                                                 readkey;
-                                                 menu_abmc;
+                                                 control:=readkey;
+                                                   if control=#27 then
+                                                     begin
+                                                       menu_abmc;
+                                                     end;
                                             end;
                                  until (pos>-1)
                           end;
