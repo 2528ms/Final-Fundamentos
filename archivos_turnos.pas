@@ -11,7 +11,7 @@ interface
              r_turno=record
                      dia_hora:st20;
                      codigo_turno:integer;
-                     dni_usuario:integer;
+                     dni_usuario:cardinal;
                      //anio:integer;
                      //descr:st100;
                      //material:st20;
@@ -104,7 +104,7 @@ implementation
                    if reg.estado_turno then
                    begin
                    clrscr;
-                 textcolor (blue);
+                 textcolor (white);
                  x:=20;
                  y:=2;
                  For i:=1 to 14 do
@@ -1052,7 +1052,7 @@ implementation
                end;                           //
           close(arch);                     //
           clrscr;
-          textcolor (blue);
+          textcolor (white);
           x:=44;
           y:=2;
           For i:=1 to 20 do
@@ -1191,7 +1191,7 @@ implementation
                                              writeln('                                                         ');
                                              repeat
                                                   gotoxy(45,16);
-                                                  writeln('Presione "s":Service ; "m":Motor; "f":Frenos');
+                                                  writeln('Presione "s":Service ; "m":Motor; "f":Freno');
                                                   gotoxy(55,11);
                                                   writeln('                             ');
                                                   gotoxy(55,11);
@@ -1209,7 +1209,7 @@ implementation
                                                                  writeln(reg.motivo);
                                                             end;
                                                        'f':begin
-                                                                 reg.motivo:='Frenos';
+                                                                 reg.motivo:='Freno';
                                                                  gotoxy(55,11);
                                                                  writeln(reg.motivo);
                                                             end;

@@ -13,7 +13,7 @@ interface
                      nombre_usuario:st20;
                      direccion_usuario:st30;
                      ciudad_usuario:st30;
-                     dni_usuario:integer;
+                     dni_usuario:cardinal;
                      tel_usuario:st30;
                      estado_usuario:boolean;
                      end;
@@ -24,7 +24,7 @@ interface
          procedure guardar_usuario(var arch:t_usuarios ; nom_arch:string ; var escribir_dato:registro_usuario);
          procedure modificar_usuario(var arch:t_usuarios; nom_arch:string ;pos:integer);
          procedure busqueda_nombre_usuario(var arch:t_usuarios; nom_arch:string; buscado:st20; var pos:integer);
-         procedure busqueda_dni_usuario(var arch:t_usuarios; nom_arch:string; buscado:integer; var pos:integer);
+         procedure busqueda_dni_usuario(var arch:t_usuarios; nom_arch:string; buscado:cardinal; var pos:integer);
          procedure alta_usuario(var arch:t_usuarios; nom_arch:string; var reg:registro_usuario);
          procedure baja_usuario(var arch:t_usuarios; nom_arch:string; var pos:integer);
          procedure alta_estado_usuario(var arch:t_usuarios; nom_arch:string; var pos:integer);
@@ -229,7 +229,7 @@ implementation
                     close(arch);
                end;
 
-               procedure busqueda_dni_usuario(var arch:t_usuarios; nom_arch:string; buscado:integer; var pos:integer);
+               procedure busqueda_dni_usuario(var arch:t_usuarios; nom_arch:string; buscado:cardinal; var pos:integer);
                var
                   reg_aux:registro_usuario;
                   i:integer;
