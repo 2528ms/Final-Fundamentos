@@ -25,7 +25,7 @@ Implementation
 
             Procedure menu_principal;
             var
-               x,y,i, color:integer;
+               x,y,i:integer;
                control,control2:char;
             Begin
                  abrir_archivo_turno(arch_turno, nombre_turno);
@@ -37,7 +37,6 @@ Implementation
                  repeat
                  clrscr;
                  textcolor (white);
-                 color:=1;
                  x:=46;
                  y:=2;
                  For i:=1 to 24 do
@@ -71,7 +70,7 @@ Implementation
                       x:=x+2
                  End;
                  Gotoxy (63,3);
-                 Writeln (#168'Que desea hacer?');
+                 Writeln ('MENU PRINCIPAL');
                  Gotoxy (48,6);
                  Writeln ('1: ABMC');
                  Gotoxy (48,10);
@@ -79,51 +78,7 @@ Implementation
                  Gotoxy (48,14);
                  Writeln ('3: Vaciar Archivos');
                  Gotoxy (48,18);
-                 Writeln ('5: Salir');
-                 Repeat
-                 textcolor (white);
-                 For i:=1 to 1 do
-                 Begin
-                 Gotoxy (63,3);
-                 Writeln (#168'Que desea hacer?');
-                 End;
-                 x:=46;
-                 y:=2;
-                 For i:=1 to 24 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      inc (y);
-                      delay(5);
-                 End;
-                 x:=47;
-                 y:=25;
-                 For i:=1 to 25 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x+2;
-                      delay(5);
-                 End;
-                 x:=96;
-                 y:=25;
-                 For i:=1 to 24 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      y:=y-1;
-                      delay(5);
-                 End;
-                 x:=95;
-                 y:=1;
-                 For i:=1 to 25 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x-2;
-                      delay(5);
-                 End;
-                 Until (keypressed = true);
+                 Writeln ('4: Cerrar Aplicacion');
                  control:=readkey;
                  case control of
                       '1':Begin
@@ -140,7 +95,6 @@ Implementation
                                 clrscr;
                                 textcolor (white);
                                 clrscr;
-                                  color:=1;
                                   x:=46;
                                   y:=2;
                                   For i:=1 to 16 do
@@ -175,52 +129,11 @@ Implementation
                                   End;
                                   textcolor (white);
                                   Gotoxy (54,4);
-                                  Writeln (#168'Seguro que desea vuciar los archivos?');
+                                  Writeln (#191'Seguro que desea vaciar los archivos?');
                                   Gotoxy (54,7);
                                   writeln ('1:SI');
                                   Gotoxy (87,7);
                                   Writeln ('2:NO');
-                                  Repeat
-                                  textcolor (white);
-                                  Gotoxy (54,4);
-                                  Writeln (#168'Seguro que desea vuciar los archivos?');
-                                  x:=46;
-                                  y:=2;
-                                  For i:=1 to 16 do
-                                  Begin
-                                       Gotoxy (x,y);
-                                       Writeln('|');
-                                       inc (y);
-                                       delay(5);
-                                  End;
-                                  x:=47;
-                                  y:=17;
-                                  For i:=1 to 25 do
-                                  Begin
-                                       Gotoxy (x,y);
-                                       Writeln ('_');
-                                       x:=x+2;
-                                       delay(5);
-                                  End;
-                                  x:=97;
-                                  y:=17;
-                                  For i:=1 to 16 do
-                                  Begin
-                                       Gotoxy (x,y);
-                                       Writeln('|');
-                                       y:=y-1;
-                                       delay(5);
-                                  End;
-                                  x:=96;
-                                  y:=1;
-                                  For i:=1 to 25 do
-                                  Begin
-                                       Gotoxy (x,y);
-                                       Writeln ('_');
-                                       x:=x-2;
-                                       delay(5);
-                                  End;
-                                  Until (keypressed = true);
                                   control2:=readkey;
                                 Repeat
                                       If control2 = '1' then
@@ -232,6 +145,7 @@ Implementation
                                               textcolor(green);
                                               writeln('Borrado correctamente!');
                                               textcolor(white);
+                                              writeln('Presione cualquier tecla para volver a Menu principal');
                                               readkey;
                                               clrscr;
                                               menu_principal
@@ -245,11 +159,10 @@ Implementation
                                   until (control2='1') or (control2='2');
                            End;
 
-                         '5':begin
+                         '4':begin
                                   textcolor (white);
                                   clrscr;
                                   repeat
-                                  color:=1;
                                   x:=46;
                                   y:=2;
                                   For i:=1 to 16 do
@@ -284,56 +197,14 @@ Implementation
                                   End;
                                   textcolor (white);
                                   Gotoxy (58,4);
-                                  Writeln (#168'Seguro que desea salir?');
+                                  Writeln (#191'Seguro que desea salir?');
                                   Gotoxy (58,7);
                                   writeln ('1:SI');
                                   Gotoxy (78,7);
                                   Writeln ('2:NO');
                                   Gotoxy (50,20);
-                                  Textcolor (color);
+                                  Textcolor (Blue);
                                   Writeln ('Alumnos: Sosa Mariano - Galarza Francisco');
-                                  Repeat
-                                  textcolor (color);
-                                  Gotoxy (58,4);
-                                  Writeln (#168'Seguro que desea salir?');
-                                  x:=46;
-                                  y:=2;
-                                  For i:=1 to 16 do
-                                  Begin
-                                       Gotoxy (x,y);
-                                       Writeln('|');
-                                       inc (y);
-                                       delay(5);
-                                  End;
-                                  x:=47;
-                                  y:=17;
-                                  For i:=1 to 25 do
-                                  Begin
-                                       Gotoxy (x,y);
-                                       Writeln ('_');
-                                       x:=x+2;
-                                       delay(5);
-                                  End;
-                                  x:=96;
-                                  y:=17;
-                                  For i:=1 to 16 do
-                                  Begin
-                                       Gotoxy (x,y);
-                                       Writeln('|');
-                                       y:=y-1;
-                                       delay(5);
-                                  End;
-                                  x:=95;
-                                  y:=1;
-                                  For i:=1 to 25 do
-                                  Begin
-                                       Gotoxy (x,y);
-                                       Writeln ('_');
-                                       x:=x-2;
-                                       delay(5);
-                                  End;
-                                  inc (color);
-                                  Until (keypressed = true);
                                   control2:=readkey;
                                   If control2 = '1' then
                                      halt;
@@ -360,13 +231,12 @@ Implementation
 
             Procedure menu_abmc;
             var
-            x,y,i, color:integer;
+            x,y,i:integer;
             control:char;
             Begin
                  clrscr;
                  repeat
                  textcolor (white);
-                 color:=1;
                  x:=46;
                  y:=2;
                  For i:=1 to 24 do
@@ -400,7 +270,7 @@ Implementation
                       x:=x+2
                  End;
                  Gotoxy (63,3);
-                 Writeln(#168'Que desea hacer?');
+                 Writeln(#191'Que desea hacer?');
                  Gotoxy (47,6);
                  Writeln ('1: Dar de alta');
                  Gotoxy (47,10);
@@ -411,48 +281,6 @@ Implementation
                  Writeln ('4: Consultar');
                  Gotoxy (47,22);
                  Writeln ('5: Volver al menu principal');
-
-                 Repeat
-                 textcolor (color);
-                 Gotoxy (63,3);
-                 Writeln (#168'Que desea hacer?');
-                 x:=46;
-                 y:=2;
-                 For i:=1 to 24 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      inc (y);
-                      delay(5);
-                 End;
-                 x:=47;
-                 y:=25;
-                 For i:=1 to 25 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x+2;
-                      delay(5);
-                 End;
-                 x:=96;
-                 y:=25;
-                 For i:=1 to 24 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      y:=y-1;
-                      delay(5);
-                 End;
-                 x:=95;
-                 y:=1;
-                 For i:=1 to 25 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x-2;
-                      delay(5);
-                 End;
-                 Until (keypressed = true);
                  control:=readkey;
                  case control of
                       '1':Begin
@@ -494,7 +322,7 @@ Implementation
 
             Procedure menu_listado;
             var
-               x,y,i, color:integer;
+               x,y,i:integer;
                control:char;
                vt:v_turnos;
                va:v_autos;
@@ -506,7 +334,6 @@ Implementation
                  clrscr;
                  repeat
                  textcolor (white);
-                 color:=1;
                  x:=41;
                  y:=2;
                  For i:=1 to 24 do
@@ -540,7 +367,7 @@ Implementation
                       x:=x+2
                  End;
                  Gotoxy (60,3);
-                 Writeln(#168'Que desea ver?');
+                 Writeln(#191'Que listado desea obtener?');
                  Gotoxy (42,6);
                  Writeln ('1: Usuarios ordenados alfabeticamente');
                  Gotoxy (42,10);
@@ -548,52 +375,9 @@ Implementation
                  Gotoxy (42,14);
                  Writeln ('3: Autos ordenados alfabeticamente');
                  Gotoxy (42,18);
-                 Writeln ('5: volver al menu principal');
-    
-                 Repeat
-                 textcolor (white);
-                 Gotoxy (60,3);
-                 Writeln(#168'Que desea ver?');
-                 x:=41;
-                 y:=2;
-                 For i:=1 to 24 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      inc (y);
-                      delay(5);
-                 End;
-                 x:=42;
-                 y:=25;
-                 For i:=1 to 30 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x+2;
-                      delay(5);
-                 End;
-                 x:=101;
-                 y:=25;
-                 For i:=1 to 24 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      y:=y-1;
-                      delay(5);
-                 End;
-                 x:=100;
-                 y:=1;
-                 For i:=1 to 30 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x-2;
-                      delay(5);
-                 End;
-                 Until (keypressed = true);
+                 Writeln ('4: volver al menu principal');
                  control:=readkey;
                  case control of
-                 
                       '1':begin
                                 textcolor(white);
                                 clrscr;
@@ -612,7 +396,7 @@ Implementation
                                 listado_autos(arch_auto, nombre_auto, va);
                                 menu_principal;
                            end;
-                      '5':Begin
+                      '4':Begin
                                clrscr;
                                menu_principal;
                           End;
@@ -630,7 +414,7 @@ Implementation
 
             Procedure menu_alta;
             var
-               x,y,i, color:integer;
+               x,y,i:integer;
                control:char;
                rt:r_turno;
                ra:r_auto;
@@ -638,7 +422,6 @@ Implementation
             Begin
                  repeat
                  textcolor (white);
-                 color:=1;
                  x:=46;
                  y:=2;
                  For i:=1 to 24 do
@@ -672,7 +455,7 @@ Implementation
                       x:=x+2
                  End;
                  Gotoxy (59,3);
-                 Writeln(#168'Que desea dar de alta?');
+                 Writeln(#191'Que desea dar de alta?');
                  Gotoxy (47,6);
                  Writeln ('1: Turno');
                  Gotoxy (47,10);
@@ -680,52 +463,9 @@ Implementation
                  Gotoxy (47,14);
                  Writeln ('3: Usuario');
                  Gotoxy (47,18);
-                 Writeln ('5: Volver al menu principal');
-
-                 Repeat
-                 textcolor (white);
-                 Gotoxy (59,3);
-                 Writeln(#168'Que desea dar de alta?');
-                 x:=46;
-                 y:=2;
-                 For i:=1 to 24 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      inc (y);
-                      delay(5);
-                 End;
-                 x:=47;
-                 y:=25;
-                 For i:=1 to 25 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x+2;
-                      delay(5);
-                 End;
-                 x:=96;
-                 y:=25;
-                 For i:=1 to 24 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      y:=y-1;
-                      delay(5);
-                 End;
-                 x:=95;
-                 y:=1;
-                 For i:=1 to 25 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x-2;
-                      delay(5);
-                 End;
-                 Until (keypressed = true);
+                 Writeln ('4: Volver al menu principal');
                  control:=readkey;
                  case control of
-                   
                       '1':begin
                                 textcolor(white);
                                 clrscr;
@@ -744,7 +484,7 @@ Implementation
                                 alta_usuario(arch_usuario, nombre_usuario, ru);
                                 menu_principal;
                           end;
-                      '5':Begin
+                      '4':Begin
                                clrscr;
                                menu_principal;
                           End;
@@ -763,7 +503,7 @@ Implementation
 
             Procedure menu_baja;
             var
-               x,y,i, color:integer;
+               x,y,i:integer;
                control:char;
                aux:integer;
                pos:integer;
@@ -805,7 +545,7 @@ Implementation
                       x:=x+2
                  End;
                  Gotoxy (59,3);
-                 Writeln(#168'Que desea dar de baja?');
+                 Writeln(#191'Que desea dar de baja?');
                  Gotoxy (47,6);
                  Writeln ('1: Turno');
                  Gotoxy (47,10);
@@ -813,49 +553,7 @@ Implementation
                  Gotoxy (47,14);
                  Writeln ('3: Usuario');
                  Gotoxy (47,18);
-                 Writeln ('5: Volver al menu principal');
-
-                 Repeat
-                 textcolor (white);
-                 Gotoxy (59,3);
-                 Writeln(#168'Que desea dar de baja?');
-                 x:=46;
-                 y:=2;
-                 For i:=1 to 24 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      inc (y);
-                      delay(5);
-                 End;
-                 x:=47;
-                 y:=25;
-                 For i:=1 to 25 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x+2;
-                      delay(5);
-                 End;
-                 x:=96;
-                 y:=25;
-                 For i:=1 to 24 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      y:=y-1;
-                      delay(5);
-                 End;
-                 x:=95;
-                 y:=1;
-                 For i:=1 to 25 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x-2;
-                      delay(5);
-                 End;
-                 Until (keypressed = true);
+                 Writeln ('4: Volver al menu principal');
                  control:=readkey;
                  case control of
                       '1':begin
@@ -978,7 +676,7 @@ Implementation
                                             end;
                                  until (pos>-1)
                           end;
-                      '5':Begin
+                      '4':Begin
                                clrscr;
                                menu_principal;
                           End;
@@ -997,9 +695,10 @@ Implementation
 
             Procedure menu_modificar;
             var
-               x,y,i, color:integer;
+               x,y,i:integer;
                control:char;
                aux:integer;
+               aux_patente:st20;
                pos:integer;
                validacion:integer;
             Begin
@@ -1037,56 +736,16 @@ Implementation
                       Writeln ('_');
                       x:=x+2
                  End;
-                 Gotoxy (61,3);
-                 Writeln(#168'Que desea modificar?');
+                 Gotoxy (55,3);
+                 Writeln(#191'Que registro desea modificar?');
                  Gotoxy (47,6);
                  Writeln ('1: Turno');
                  Gotoxy (47,10);
+                 Writeln ('2: Auto');
+                 Gotoxy (47,14);
                  Writeln ('3: Volver al menu principal');
-                 Repeat
-                 textcolor (white);
-                 Gotoxy (61,3);
-                 Writeln(#168'Que desea modificar?');
-                 x:=46;
-                 y:=2;
-                 For i:=1 to 16 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      inc (y);
-                      delay(5);
-                 End;
-                 x:=47;
-                 y:=17;
-                 For i:=1 to 25 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x+2;
-                      delay(5);
-                 End;
-                 x:=96;
-                 y:=17;
-                 For i:=1 to 16 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      y:=y-1;
-                      delay(5);
-                 End;
-                 x:=95;
-                 y:=1;
-                 For i:=1 to 25 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x-2;
-                      delay(5);
-                 End;
-                 Until (keypressed = true);
                  control:=readkey;
-                 case control of
-                      
+                 case control of 
                       '1': begin
                                textcolor(white);
                                repeat
@@ -1119,6 +778,43 @@ Implementation
                                                      end;
                                  until (pos>-1) and (validacion=0);
                           end;
+                         '2':begin
+                               textcolor(white);
+                               repeat
+                                     clrscr;
+                                     repeat
+                                           writeln('Ingrese la patente del auto que desea modificar: ');
+                                           {$I-}
+                                                readln(aux_patente);
+                                           {$I+}
+                                           validacion:=ioresult();
+                                           if validacion<>0 then
+                                              begin
+                                                   textcolor(red);
+                                                   writeln('Debe ingresar un tipo de dato alfanumerico.');
+                                                   textcolor(white);
+                                              end;
+                                     until validacion=0;
+                                     busqueda_patente(arch_auto, nombre_auto, aux_patente, pos);
+                                     if pos>-1 then
+                                        begin
+                                             modificar_auto(arch_auto, nombre_auto, pos);
+                                             menu_principal;
+                                        end
+                                        else
+                                            begin
+                                                 textcolor(red);
+                                                 writeln('El auto no esta registrado.');
+                                                 writeln('Presione ESC. para salir o enter para volver a intentar..');
+                                                 textcolor(white);
+                                                 control:=readkey;
+                                                   if control=#27 then
+                                                     begin
+                                                       menu_abmc;
+                                                     end;
+                                            end;
+                                 until (pos>-1)
+                          end;
                       '3':Begin
                                clrscr;
                                menu_principal;
@@ -1137,7 +833,7 @@ Implementation
 
             Procedure menu_consultar;
             var
-               x,y,i, color:integer;
+               x,y,i:integer;
                control:char;
             Begin
                  clrscr;
@@ -1176,55 +872,13 @@ Implementation
                       x:=x+2
                  End;
                  Gotoxy (61,3);
-                 Writeln(#168'Que desea consultar?');
+                 Writeln(#191'Que desea consultar?');
                  Gotoxy (47,6);
                  Writeln ('1: Turno');
                  Gotoxy (47,10);
                  Writeln ('2: Usuario');
                  Gotoxy (47,14);
                  Writeln ('3: Volver al menu principal');
-
-                 Repeat
-                 textcolor (white);
-                 Gotoxy (61,3);
-                 Writeln(#168'Que desea consultar?');
-                 x:=46;
-                 y:=2;
-                 For i:=1 to 20 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      inc (y);
-                      delay(5);
-                 End;
-                 x:=47;
-                 y:=21;
-                 For i:=1 to 25 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x+2;
-                      delay(5);
-                 End;
-                 x:=96;
-                 y:=21;
-                 For i:=1 to 20 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln('|');
-                      y:=y-1;
-                      delay(5);
-                 End;
-                 x:=95;
-                 y:=1;
-                 For i:=1 to 25 do
-                 Begin
-                      Gotoxy (x,y);
-                      Writeln ('_');
-                      x:=x-2;
-                      delay(5);
-                 End;
-                 Until (keypressed = true);
                  control:=readkey;
                  case control of
                       '1':begin
