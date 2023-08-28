@@ -80,9 +80,9 @@ implementation
                    gotoxy(22,1);
                    writeln ('Listado de autos ordenados por Marca');
                    Gotoxy (1,2);
-                   writeln ('| Marca del auto |      Modelo      |     Patente     |     Tipo     | Combustible |');
+                   writeln ('| Marca del auto |      Modelo      |     Patente     |        Tipo       |       Combustible    |');
                    Gotoxy (1,3);
-                   Writeln ('________________________________________________________________________________________________');
+                   Writeln ('__________________________________________________________________________________________________');
                    for i:=1 to lim do
                    begin
                         if (i mod 17)<>0 then

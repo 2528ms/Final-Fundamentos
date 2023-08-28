@@ -63,6 +63,7 @@ implementation
                  reg:r_auto;
                  control:char;
                  validacion:integer;
+                 confirmacion: Boolean;
               begin
                    clrscr;
                    leer_auto(arch, nom_arch, pos, reg);
@@ -78,7 +79,7 @@ implementation
                       Writeln('|');
                       inc (y);
                  End;
-                 x:=60;
+                 x:=50; 
                  y:=3;
                  For i:=1 to 14 do
                  Begin
@@ -112,7 +113,9 @@ implementation
                  End;
                    textcolor (white);
                    gotoxy(55,1);
-                   writeln('Modificar Auto');
+                   writeln('MODIFICAR REGISTRO AUTO');
+                   gotoxy(21,3);
+                   writeln('DATOS ACTUALES');
                    gotoxy(21,4);
                    writeln('Marca: ', reg.marca);
                    gotoxy(21,5);
@@ -121,31 +124,31 @@ implementation
                    writeln('Tipo: ', reg.tipo);
                    gotoxy(21,7);
                    writeln('Combustible: ',reg.combustible);
-                   gotoxy(61,3);
-                   writeln(#168,'Que desea modificar?');
-                   gotoxy(61,4);
+                   gotoxy(51,3);
+                   writeln(#191'Que desea modificar?');
+                   gotoxy(51,4);
                    writeln('1: Marca: ');
-                   gotoxy(61,5);
+                   gotoxy(51,5);
                    writeln('2: Modelo: ');
-                   gotoxy(61,6);
+                   gotoxy(51,6);
                    writeln('3: Tipo: ');
-                   gotoxy(61,7);
+                   gotoxy(51,7);
                    writeln('4: Combustible: ');
-                   gotoxy(61,8);
+                   gotoxy(51,8);
                    writeln('ESC: Salir ');
                    repeat
-                         gotoxy(21,9);
+                         gotoxy(63,9);
                          control:=readkey;
                          keypressed;
                          case control of
                               '1':begin
-                                       gotoxy(72,4);
+                                       gotoxy(67,4);
                                        writeln('                           ');
-                                       gotoxy(72,4);
+                                       gotoxy(67,4);
                                        readln(reg.marca);
-                                       gotoxy(29,4);
+                                       gotoxy(28,4);
                                        writeln('              ');
-                                       gotoxy(29,4);
+                                       gotoxy(28,4);
                                        writeln(reg.marca);
                                        reg.estado_auto:=true;
                                        abrir_archivo_auto(arch, nom_arch);
@@ -154,13 +157,13 @@ implementation
                                        close(arch);
                                   end;
                                '2':begin
-                                       gotoxy(75,5);
+                                       gotoxy(67,5);
                                        writeln('                           ');
-                                       gotoxy(75,5);
+                                       gotoxy(67,5);
                                        readln(reg.modelo);
-                                       gotoxy(32,5);
+                                       gotoxy(29,5);
                                        writeln('              ');
-                                       gotoxy(32,5);
+                                       gotoxy(29,5);
                                        writeln(reg.modelo);
                                        reg.estado_auto:=true;
                                        abrir_archivo_auto(arch, nom_arch);
@@ -173,32 +176,56 @@ implementation
                                                gotoxy(21,10);
                                                writeln('                           ');
                                                gotoxy(21,11);
-                                               writeln('                                      ');
-                                               gotoxy(74,6);
                                                writeln('                           ');
-                                               gotoxy(74,6);
-                                               {$I-}
-                                                    readln(reg.tipo);
-                                               {$I+}
-                                               validacion:=ioresult();
-                                               if validacion<>0 then
-                                                  begin
-                                                       textcolor(red);
-                                                       gotoxy(21,10);
-                                                       writeln('Debe ingresar solo numeros.');
-                                                       gotoxy(21,11);
-                                                       writeln('Presione enter para intentar de nuevo.');
-                                                       textcolor(white);
-                                                       readkey;
-                                                  end;
-                                         until validacion=0;
+                                               gotoxy(67,6);
+                                               writeln('                           ');
+                                               gotoxy(51,12);
+                                               writeln('Pulse "A" = Auto ;"C" = Camioneta;"U" = Utilitario');
+                                                control := readkey;
+                                                  keypressed;
+                                                  confirmacion := false;
+                                                  Case control Of 
+                                                       'a':
+                                                            Begin
+                                                            reg.tipo := 'Auto';
+                                                            gotoxy(67,6);
+                                                            writeln(reg.tipo);
+                                                            confirmacion := true;
+                                                            End;
+                                                       'c':
+                                                            Begin
+                                                            reg.tipo := 'Camioneta';
+                                                            gotoxy(67,6);
+                                                            writeln(reg.tipo);
+                                                            confirmacion := true;
+                                                            End;
+                                                       'u':
+                                                            Begin
+                                                            reg.tipo := 'Utilitario';
+                                                            gotoxy(67,6);
+                                                            writeln(reg.tipo);
+                                                            confirmacion := true;
+                                                            End;
+                                                       Else
+                                                       Begin
+                                                            gotoxy(51,13);
+                                                            Textcolor (red);
+                                                            writeln('La letra ingresada es incorrecta...');
+                                                            Textcolor (white);
+                                                       End;
+                                                  End;
+                                             Until (confirmacion = true);
+                                         gotoxy(51,12);
+                                         writeln('                                                   ');
+                                         gotoxy(51,13);
+                                         writeln('                                   ');
                                          gotoxy(21,10);
                                          writeln('                           ');
                                          gotoxy(21,11);
-                                         writeln('                                      ');
-                                         gotoxy(31,6);
+                                         writeln('                           ');
+                                         gotoxy(27,6);
                                          writeln('              ');
-                                         gotoxy(31,6);
+                                         gotoxy(27,6);
                                          writeln(reg.tipo);
                                          reg.estado_auto:=true;
                                          abrir_archivo_auto(arch, nom_arch);
@@ -209,34 +236,59 @@ implementation
                                 '4':begin
                                          repeat
                                                gotoxy(21,10);
-                                               writeln('                           ');
+                                               writeln('                       ');
                                                gotoxy(21,11);
-                                               writeln('                                      ');
-                                               gotoxy(73,7);
+                                               writeln('                       ');
+                                               gotoxy(67,7);
                                                writeln('                           ');
-                                               gotoxy(73,7);
-                                               {$I-}
-                                                    readln(reg.combustible);
-                                               {$I+}
-                                               validacion:=ioresult();
-                                               if validacion<>0 then
-                                                  begin
-                                                       textcolor(red);
-                                                       gotoxy(21,10);
-                                                       writeln('Debe ingresar tipo de combustible.');
-                                                       gotoxy(21,11);
-                                                       writeln('Presione enter para intentar de nuevo.');
-                                                       textcolor(white);
-                                                       readkey;
-                                                  end;
-                                         until validacion=0;
+                                               gotoxy(67,7);
+                                                  gotoxy(51,12);
+                                                  writeln('Pulse "N" = nafta; "G" = gasoil; "C" = nafa/gas.');
+                                                  control := readkey;
+                                                  keypressed;
+                                                  confirmacion := false;
+                                                  Case control Of 
+                                                       'n':
+                                                            Begin
+                                                            reg.combustible := 'Nafta';
+                                                            gotoxy(67,7);
+                                                            writeln(reg.combustible);
+                                                            confirmacion := true;
+                                                            End;
+                                                       'g':
+                                                            Begin
+                                                            reg.combustible := 'Gasoil';
+                                                            gotoxy(67,7);
+                                                            writeln(reg.combustible);
+                                                            confirmacion := true;
+                                                            End;
+                                                       'c':
+                                                            Begin
+                                                            reg.combustible := 'Nafta y gas';
+                                                            gotoxy(67,7);
+                                                            writeln(reg.combustible);
+                                                            confirmacion := true;
+                                                            End;
+                                                       Else
+                                                       Begin
+                                                            gotoxy(51,13);
+                                                            Textcolor (red);
+                                                            writeln('La letra ingresada es incorrecta...');
+                                                            Textcolor (white);
+                                                       End;
+                                                  End;
+                                             Until (confirmacion = true);
+                                         gotoxy(51,12);
+                                         writeln('                                                ');
+                                         gotoxy(51,13);
+                                         writeln('                                   ');
                                          gotoxy(21,10);
-                                         writeln('                           ');
+                                         writeln('                        ');
                                          gotoxy(21,11);
-                                         writeln('                                      ');
-                                         gotoxy(30,7);
+                                         writeln('                        ');
+                                         gotoxy(33,7);
                                          writeln('              ');
-                                         gotoxy(30,7);
+                                         gotoxy(34,7);
                                          writeln(reg.combustible);
                                          reg.estado_auto:=true;
                                          abrir_archivo_auto(arch, nom_arch);
@@ -249,7 +301,10 @@ implementation
                    end
                       else
                           begin
+                               textcolor (red);
                                writeln('El Auto esta dado de baja.');
+                               textcolor (white);
+                               writeln('Precione cualquier tecla para volver al menu principal');
                                readkey;
                           end;
               end;
@@ -324,7 +379,6 @@ implementation
               var
                  posi,x,y,i:integer;
                  control:char;
-                 asd:string;
                  validacion:integer;
               begin
                    clrscr;
@@ -375,12 +429,8 @@ implementation
                    writeln('Tipo: ');
                    gotoxy(45,8);
                    writeln('Combustible: ');
-               //     gotoxy(64,4);
-               //     readln(asd);
-               //     busqueda_patente(arch, nom_arch, asd, posi);
                    if posi = -1 then
                       begin
-                           //reg.patente:=asd;
                            repeat
                                  gotoxy(60,4);
                                  writeln('                                             ');
@@ -410,8 +460,6 @@ implementation
                            until (posi=-1) and (validacion=0);
                            gotoxy(45,10);
                            writeln('                                              ');
-                         //   gotoxy(56,4);
-                         //   readln(reg.patente);
                            repeat
                                         gotoxy(60,5);
                                         writeln('                                        ');
@@ -546,7 +594,7 @@ implementation
                                      begin
                                           repeat
                                                 gotoxy(45,10);
-                                                writeln('Este Auto ya esta registrado.', #168'Que desea hacer?');
+                                                writeln('Este Auto ya esta registrado.', #191'Que desea hacer?');
                                                 gotoxy(45,11);
                                                 writeln('1: Modificar');
                                                 gotoxy(45,12);
@@ -592,10 +640,9 @@ implementation
                                                                          writeln('                                              ');
                                                                          gotoxy(45,14);
                                                                          writeln('                                              ');
-                                                                         reg.marca:=asd;
                                                                          repeat
                                                                                gotoxy(50,5);
-                                                                               writeln('                                     ');
+                                                                               writeln('                        ');
                                                                                gotoxy(50,5);
                                                                                {$I-}
                                                                                     readln(reg.patente);
