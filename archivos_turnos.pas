@@ -11,7 +11,7 @@ interface
              r_turno=record
                      dia_hora:st20;
                      codigo_turno:integer;
-                     dni_usuario:cardinal;
+                     dni_usuario:longint;
                      //anio:integer;
                      //descr:st100;
                      //material:st20;
@@ -37,7 +37,7 @@ interface
          procedure baja_turno(var arch:t_turnos; nom_arch:string; var pos:integer);
          procedure alta_estado_turno(var arch:t_turnos; nom_arch:string; var pos:integer);
          procedure busqueda_patente(var arch:t_autos; nom_arch_a:string; buscado:st20; var pos:integer);
-        // procedure busqueda_dni_usuario(var arch:t_turnos; nom_arch:string; buscado:integer; var pos:integer);
+        // procedure busqueda_dni_usuario(var arch:t_turnos; nom_arch:string; buscado:st8; var pos:integer);
          //procedure estadistica_museo(var arch:t_turnos; nom_arch:string; buscado:integer; var pos:integer);
          procedure eliminar_archivo_turno(var arch:t_turnos);
 
@@ -104,7 +104,7 @@ implementation
                    if reg.estado_turno then
                    begin
                    clrscr;
-                 textcolor (white);
+                 textcolor (blue);
                  x:=20;
                  y:=2;
                  For i:=1 to 14 do
@@ -146,86 +146,26 @@ implementation
                       x:=x+2
                  End;
                    textcolor (white);
-                   gotoxy(21,3);
-                   writeln('Dia hora del turno: ', reg.dia_hora);
                    gotoxy(21,4);
-                   writeln('DNI del usuario: ', reg.dni_usuario);
+                   writeln('Fecha del turno: ', reg.dia_hora);
                    gotoxy(21,5);
-                   writeln('Patente: ', reg.patente);
+                   writeln('DNI del usuario: ', reg.dni_usuario);
                    gotoxy(21,6);
-                //    writeln('Material: ', reg.material);
-                //    gotoxy(21,7);
-                //    writeln('Descripcion: ', reg.descr);
-                //    gotoxy(21,8);
                    writeln('motivo: ', reg.motivo);
-                //    if (reg.motivo = 'Estatua') then
-                //       begin
-                //            gotoxy(21,11);
-                //            writeln('Altura: ', reg.altura:2:2);
-                //            gotoxy(21,12);
-                //            writeln('Peso: ', reg.peso:2:2);
-                //       end
-                //          else
-                //              begin
-                //                   if (reg.motivo = 'Fosil') then
-                //                      begin
-                //                           gotoxy(21,11);
-                //                           writeln('Completo: ',reg.completo);
-                //                           gotoxy(21,12);
-                //                           writeln('Cantidad de partes: ', reg.can_partes);
-                //                      end;
-                //              end;
-                //    gotoxy(21,9);
-                //    writeln('Año: ', reg.anio);
-                   gotoxy(21,10);
+                   gotoxy(21,7);
                    writeln('Patente auto: ', reg.patente);
                    gotoxy(61,2);
-                   writeln(#168,'Que desea modificar?');
+                   writeln('Elegir la opcion para modificar ');
                    gotoxy(61,3);
-                   writeln('1: Dia y hora del turno: ');
+                   writeln();
                    gotoxy(61,4);
-                   writeln('2: DNI del Usuario: ');
+                   writeln('1: Fecha del turno: ');
                    gotoxy(61,5);
-                //    writeln('3: Estilo: ');
-                //    gotoxy(61,6);
-                //    writeln('4: Material: ');
-                //    gotoxy(61,7);
-                //    writeln('5: Descripcion: ');
-                //    gotoxy(61,8);
+                   writeln('2: DNI del Usuario: ');
+                   gotoxy(61,6);
                    writeln('3: motivo: ');
-                //    if (reg.motivo = 'Estatua') then
-                //       begin
-                //            gotoxy(61,11);
-                //            writeln('                            ');
-                //            gotoxy(61,11);
-                //            writeln('a: Altura: ');
-                //            gotoxy(61,12);
-                //            writeln('                            ');
-                //            gotoxy(61,12);
-                //            writeln('b Peso: ');
-                //       end
-                //          else
-                //              begin
-                //                   if (reg.motivo = 'Fosil') then
-                //                      begin
-                //                           gotoxy(61,11);
-                //                           writeln('c: Completo: ');
-                //                           gotoxy(61,12);
-                //                           writeln('d: Cantidad de partes: ');
-                //                      end
-                //                         else
-                //                             begin
-                //                                  gotoxy(61,11);
-                //                                  writeln('                            ');
-                //                                  gotoxy(61,11);
-                //                                  writeln('                            ');
-                //                             end;
-                //              end;
-
-                //    gotoxy(61,9);
-                //    writeln('7: Año: ');
-                   gotoxy(61,10);
-                   writeln('4: Patente del auto: ');
+                   gotoxy(61,7);
+                   writeln('4: Patente auto: ');
                    gotoxy(61,13);
                    writeln('ESC: Salir');
                    repeat
@@ -236,13 +176,13 @@ implementation
                          keypressed;
                          case control of
                          '1':begin
-                                  gotoxy(83,3);
-                                  writeln('                   ');
-                                  gotoxy(83,3);
+                                  gotoxy(81,4);
+                                   writeln('                   ');
+                                   gotoxy(81,4);
                                   readln(reg.dia_hora);
-                                  gotoxy(40,3);
+                                  gotoxy(38,4);
                                   writeln('                ');
-                                  gotoxy(40,3);
+                                  gotoxy(40,4);
                                   writeln(reg.dia_hora);
                                   abrir_archivo_turno(arch, nom_arch);
                                   seek(arch, pos);
@@ -250,9 +190,9 @@ implementation
                                   close(arch);
                              end;
                          '2':begin
-                                  gotoxy(81,4);
-                                  writeln('                    ');
-                                  gotoxy(81,4);
+                                  gotoxy(81,5);
+                                  writeln('                  ');
+                                  gotoxy(81,5);
                                   {$I-}
                                        readln(reg.dni_usuario);
                                   {$I+}
@@ -265,9 +205,9 @@ implementation
                                                   leer_usuario(arch_u, nom_arch_u, posi, reg_u);
                                                   if reg_u.estado_usuario then
                                                      begin
-                                                          gotoxy(38,4);
+                                                          gotoxy(38,5);
                                                           writeln('                     ');
-                                                          gotoxy(38,4);
+                                                          gotoxy(40,5);
                                                           writeln(reg.dni_usuario);
                                                           abrir_archivo_turno(arch, nom_arch);
                                                           seek(arch, pos);
@@ -307,58 +247,16 @@ implementation
                                                  readkey;
                                             end;
                              end;
-                        //  '3':begin
-                        //           gotoxy(72,5);
-                        //           writeln('                         ');
-                        //           gotoxy(72,5);
-                        //           readln(reg.estilo);
-                        //           gotoxy(29,5);
-                        //           writeln('                       ');
-                        //           gotoxy(29,5);
-                        //           writeln(reg.estilo);
-                        //           abrir_archivo_turno(arch, nom_arch);
-                        //           seek(arch, pos);
-                        //           write(arch, reg);
-                        //           close(arch);
-                        //      end;
-                        //  '4':begin
-                        //           gotoxy(74,6);
-                        //           writeln('                         ');
-                        //           gotoxy(74,6);
-                        //           readln(reg.material);
-                        //           gotoxy(31,6);
-                        //           writeln('                       ');
-                        //           gotoxy(31,6);
-                        //           writeln(reg.material);
-                        //           abrir_archivo_turno(arch, nom_arch);
-                        //           seek(arch, pos);
-                        //           write(arch, reg);
-                        //           close(arch);
-                        //      end;
-                        //  '5':begin
-                        //           gotoxy(77,7);
-                        //           writeln('                         ');
-                        //           gotoxy(77,7);
-                        //           readln(reg.descr);
-                        //           gotoxy(34,7);
-                        //           writeln('                       ');
-                        //           gotoxy(34,7);
-                        //           writeln(reg.descr);
-                        //           abrir_archivo_turno(arch, nom_arch);
-                        //           seek(arch, pos);
-                        //           write(arch, reg);
-                        //           close(arch);
-                        //      end;
                          '3':begin
                                   gotoxy(72,8);
-                                  writeln('                         ');
+                                  writeln('                    ');
                                   textcolor(yellow);
                                   gotoxy(21,16);
                                   writeln('Presione "s":Service ; "m":Motor; "f":Frenos');
                                   textcolor(white);
-                                  gotoxy(70,8);
+                                  gotoxy(81,6);
                                   writeln('                       ');
-                                  gotoxy(70,8);
+                                  gotoxy(81,6);
                                   reg.motivo:=readkey;
                                   keypressed;
                                   if (reg.motivo='s') or (reg.motivo='m') or (reg.motivo='f') then
@@ -366,7 +264,7 @@ implementation
                                           if reg.motivo='s' then
                                              begin
                                                   reg.motivo:='Service';
-                                                  gotoxy(70,8);
+                                                  gotoxy(81,6);
                                                   writeln(reg.motivo);
                                                   gotoxy(21,11);
                                                   writeln('                       ');
@@ -385,22 +283,8 @@ implementation
                                                  if reg.motivo='m' then
                                                     begin
                                                          reg.motivo:='Motor';
-                                                         gotoxy(70,8);
+                                                         gotoxy(81,6);
                                                          writeln(reg.motivo);
-                                                        //  reg.completo:='No';
-                                                        //  reg.can_partes:=0;
-                                                        //  gotoxy(21,11);
-                                                        //  writeln('                                      ');
-                                                        //  gotoxy(21,11);
-                                                        //  writeln('Completo: ', reg.completo);
-                                                        //  gotoxy(21,12);
-                                                        //  writeln('Cantidad de partes: ', reg.can_partes);
-                                                        //  gotoxy(61,11);
-                                                        //  writeln('                                      ');
-                                                        //  gotoxy(61,11);
-                                                        //  writeln('c: Completo: ');
-                                                        //  gotoxy(61,12);
-                                                        //  writeln('d: Cantidad de partes: ');
                                                          abrir_archivo_turno(arch, nom_arch);
                                                          seek(arch, pos);
                                                          write(arch, reg);
@@ -409,34 +293,16 @@ implementation
                                                     else
                                                         begin
                                                              reg.motivo:='Frenos';
-                                                             gotoxy(70,8);
+                                                             gotoxy(81,6);
                                                              writeln(reg.motivo);
-                                                            //  reg.altura:=0;
-                                                            //  reg.peso:=0;
-                                                            //  gotoxy(21,1);
-                                                            //  writeln('                    ');
-                                                            //  gotoxy(21,11);
-                                                            //  writeln('Altura: ', reg.altura:2:2);
-                                                            //  gotoxy(21,12);
-                                                            //  writeln('                        ');
-                                                            //  gotoxy(21,12);
-                                                            //  writeln('Peso: ', reg.peso:2:2);
-                                                            //  gotoxy(61,11);
-                                                            //  writeln('                            ');
-                                                            //  gotoxy(61,11);
-                                                            //  writeln('a: Altura: ');
-                                                            //  gotoxy(61,12);
-                                                            //  writeln('                            ');
-                                                            //  gotoxy(61,12);
-                                                            //  writeln('b Peso: ');
                                                              abrir_archivo_turno(arch, nom_arch);
                                                              seek(arch, pos);
                                                              write(arch, reg);
                                                              close(arch);
                                                         end;
-                                          gotoxy(27,8);
+                                          gotoxy(29,6);
                                           writeln('                       ');
-                                          gotoxy(27,8);
+                                          gotoxy(40,6);
                                           writeln(reg.motivo);
                                        end
                                           else
@@ -451,40 +317,10 @@ implementation
                                               end;
 
                              end;
-                        //  '7':begin
-                        //           gotoxy(69,9);
-                        //           writeln('                         ');
-                        //           gotoxy(69,9);
-                        //           {$I-}
-                        //                readln(reg.anio);
-                        //           {$I+}
-                        //           validacion:=ioresult();
-                        //           if validacion=0 then
-                        //              begin
-                        //                   gotoxy(26,9);
-                        //                   writeln('                     ');
-                        //                   gotoxy(26,9);
-                        //                   writeln(reg.anio);
-                        //                   abrir_archivo_turno(arch, nom_arch);
-                        //                   seek(arch, pos);
-                        //                   write(arch, reg);
-                        //                   close(arch);
-                        //              end
-                        //                 else
-                        //                     begin
-                        //                          gotoxy(21,16);
-                        //                          writeln('                                      ');
-                        //                          gotoxy(21,16);
-                        //                          Textcolor(red);
-                        //                          writeln('Debe ingresar solo numeros. Presione enter para intentar de nuevo');
-                        //                          Textcolor(white);
-                        //                          readkey;
-                        //                     end;
-                        //      end;
                          '4':begin
-                                  gotoxy(82,10);
+                                  gotoxy(81,7);
                                   writeln('                    ');
-                                  gotoxy(82,10);
+                                  gotoxy(81,7);
                                   {$I-}
                                        readln(reg.patente);
                                   {$I+}
@@ -497,9 +333,9 @@ implementation
                                                   leer_auto(arch_a, nom_arch_a, posi, reg_a);
                                                   if reg_a.estado_auto then
                                                      begin
-                                                          gotoxy(41,10);
+                                                          gotoxy(34,7);
                                                           writeln('                     ');
-                                                          gotoxy(41,10);
+                                                          gotoxy(40,7);
                                                           writeln(reg.patente);
                                                           abrir_archivo_turno(arch, nom_arch);
                                                           seek(arch, pos);
@@ -539,148 +375,6 @@ implementation
                                                  readkey;
                                             end;
                              end;
-                        //  'a':begin
-                        //           gotoxy(72,11);
-                        //           writeln('                         ');
-                        //           gotoxy(72,11);
-                        //           {$I-}
-                        //                readln(reg.altura);
-                        //           {$I+}
-                        //           validacion:=ioresult();
-                        //           if validacion=0 then
-                        //              begin
-                        //                   gotoxy(29,11);
-                        //                   writeln('                 ');
-                        //                   gotoxy(29,11);
-                        //                   writeln(reg.altura:2:2);
-                        //                   abrir_archivo_turno(arch, nom_arch);
-                        //                   seek(arch, pos);
-                        //                   write(arch, reg);
-                        //                   close(arch);
-                        //              end
-                        //                 else
-                        //                     begin
-                        //                          gotoxy(21,16);
-                        //                          writeln('                                      ');
-                        //                          gotoxy(21,16);
-                        //                          Textcolor(red);
-                        //                          writeln('Debe ingresar solo numeros. Presione enter para intentar de nuevo');
-                        //                          Textcolor(white);
-                        //                          readkey;
-                        //                     end;
-                        //      end;
-                        //  'b':begin
-                        //           gotoxy(69,12);
-                        //           writeln('                         ');
-                        //           gotoxy(69,12);
-                        //           {$I-}
-                        //                readln(reg.peso);
-                        //           {$I+}
-                        //           validacion:=ioresult();
-                        //           if validacion=0 then
-                        //              begin
-                        //                   gotoxy(27,12);
-                        //                   writeln('                 ');
-                        //                   gotoxy(27,12);
-                        //                   writeln(reg.peso:2:2);
-                        //                   abrir_archivo_turno(arch, nom_arch);
-                        //                   seek(arch, pos);
-                        //                   write(arch, reg);
-                        //                   close(arch);
-                        //              end
-                        //                 else
-                        //                     begin
-                        //                          gotoxy(21,16);
-                        //                          writeln('                                      ');
-                        //                          gotoxy(21,16);
-                        //                          Textcolor(red);
-                        //                          writeln('Debe ingresar solo numeros. Presione enter para intentar de nuevo');                                                 writeln('Debe ingresar solo numeros. Presione enter para intentar de nuevo');
-                        //                          Textcolor(white);
-                        //                          readkey;
-                        //                     end;
-                        //       end;
-                        //  'c':begin
-                        //           textcolor(yellow);
-                        //           gotoxy(21,16);
-                        //           writeln('Presione s:Si ; n: No');
-                        //           textcolor(white);
-                        //           gotoxy(74,11);
-                        //           writeln('                       ');
-                        //           gotoxy(74,11);
-                        //           reg.completo:=readkey;
-                        //           keypressed;
-                        //           if reg.completo='s' then
-                        //              begin
-                        //                   reg.completo:='Si';
-                        //                   gotoxy(74,11);
-                        //                   writeln(reg.completo);
-                        //                   gotoxy(31,11);
-                        //                   writeln('         ');
-                        //                   gotoxy(31,11);
-                        //                   writeln(reg.completo);
-                        //                   abrir_archivo_turno(arch, nom_arch);
-                        //                   seek(arch, pos);
-                        //                   write(arch, reg);
-                        //                   close(arch);
-                        //              end
-                        //                 else
-                        //                     begin
-                        //                          if reg.completo='n' then
-                        //                             begin
-                        //                                  reg.completo:='No';
-                        //                                  gotoxy(74,11);
-                        //                                  writeln(reg.completo);
-                        //                                  gotoxy(31,11);
-                        //                                  writeln('         ');
-                        //                                  gotoxy(31,11);
-                        //                                  writeln(reg.completo);
-                        //                                  abrir_archivo_turno(arch, nom_arch);
-                        //                                  seek(arch, pos);
-                        //                                  write(arch, reg);
-                        //                                  close(arch);
-                        //                             end
-                        //                                else
-                        //                                    begin
-                        //                                         gotoxy(21,16);
-                        //                                         writeln('                                      ');
-                        //                                         gotoxy(21,16);
-                        //                                         Textcolor(red);
-                        //                                         writeln('Letra erronea');
-                        //                                         Textcolor(white);
-                        //                                         readkey;
-                        //                                    end;
-                        //                     end;
-                        //      end;
-                        //  'd':begin
-                        //           gotoxy(84,12);
-                        //           writeln('              ');
-                        //           gotoxy(84,12);
-                        //           {$I-}
-                        //                readln(reg.can_partes);
-                        //           {$I+}
-                        //           validacion:=ioresult();
-                        //           if validacion = 0 then
-                        //              begin
-                        //                   gotoxy(41,12);
-                        //                   writeln('          ');
-                        //                   gotoxy(41,12);
-                        //                   writeln(reg.can_partes);
-                        //                   abrir_archivo_turno(arch, nom_arch);
-                        //                   seek(arch, pos);
-                        //                   write(arch, reg);
-                        //                   close(arch);
-                        //              end
-                        //                 else
-                        //                     begin
-                        //                          gotoxy(21,16);
-                        //                          writeln('                                      ');
-                        //                          gotoxy(21,16);
-                        //                          Textcolor(red);
-                        //                          writeln('Debe ingresar solo numeros. Presione enter para intentar de nuevo');
-                        //                          Textcolor(white);
-                        //                          readkey;
-                        //                     end;
-                        //      end;
                          end;
                    until control=#27;
                    end
@@ -1039,7 +733,7 @@ implementation
           asd:integer;
           aux_hora:st20;
           validacion:integer;
-          //reg_u:registro_usuario;
+          //reg_u:registro_usuario;//modifique esta linea
           reg_a:r_auto;
           reg_aux_t:r_turno;
           ultima_posicion:integer;

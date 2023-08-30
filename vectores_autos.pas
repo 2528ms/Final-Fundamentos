@@ -194,8 +194,6 @@ implementation
                                     until (control='a') or (control=#27);
                                   end;
                    end;
-                   writeln('Presione ESC para salir.');
-                   gotoxy(1,1);
 
               end;
 

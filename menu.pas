@@ -508,6 +508,7 @@ Implementation
                aux:integer;
                pos:integer;
                aux_patente:st20;
+               aux_dni:longint;
                validacion:integer;
             Begin
                  repeat
@@ -644,7 +645,7 @@ Implementation
                                      repeat
                                            writeln('Ingrese el DNI del Usuario que desea dar de baja: ');
                                            {$I-}
-                                                readln(aux);
+                                                readln(aux_dni);
                                            {$I+}
                                            validacion:=ioresult();
                                            if validacion<>0 then
@@ -654,7 +655,7 @@ Implementation
                                                    textcolor(white);
                                               end;
                                      until validacion=0;
-                                     busqueda_dni_usuario(arch_usuario, nombre_usuario, aux, pos);
+                                     busqueda_dni_usuario(arch_usuario, nombre_usuario, aux_dni, pos);
                                      if pos>-1 then
                                         begin
                                              baja_usuario(arch_usuario, nombre_usuario, pos);
@@ -971,6 +972,12 @@ Implementation
                               begin
                                    gotoxy(60,2);
                                    writeln('Turno: ', aux);
+                                   gotoxy(60,5);
+                                   writeln('Fecha: ', reg_turno.dia_hora);
+                                   gotoxy(60,6);
+                                   writeln('Motivo: ', reg_turno.motivo);
+                                   gotoxy(60,7);
+                                   writeln('Patente: ', reg_turno.patente);
                                    gotoxy(51,3);
                                    writeln('-------------------------------------');
                                    busqueda_dni_usuario(arch_usuario, nom_usuario, reg_turno.dni_usuario, pos);
@@ -979,13 +986,13 @@ Implementation
                                              leer_usuario(arch_usuario, nom_usuario, pos, reg_usuario);
                                              if reg_usuario.estado_usuario then
                                              begin
-                                                  gotoxy(56,4);
+                                                  gotoxy(60,4);
                                                   writeln('usuario: ', reg_usuario.nombre_usuario);
                                              end
                                                   else
                                                        begin
                                                             textcolor(red);
-                                                            gotoxy(56,4);
+                                                            gotoxy(60,9);
                                                             writeln('El Usuario esta dado de baja');
                                                             textcolor(white);
                                                        end;
@@ -993,7 +1000,7 @@ Implementation
                               end
                                    else
                                         begin
-                                             gotoxy(56,1);
+                                             gotoxy(60,10);
                                              textcolor(red);
                                              writeln('El turno esta dada de baja');
                                              textcolor(white);
@@ -1018,15 +1025,15 @@ Implementation
      procedure consulta_usuario(var arch_t:t_turnos; var arch_u:t_usuarios ; nom_usuario:string);
      var
      reg_usua:registro_usuario;
-     aux:integer;
+     aux:longint;
      pos:integer;
      validacion:integer;
      begin
           textcolor(white);
           repeat
-               writeln('Ingrese el DNI del usuario que desea consultar:');
+               writeln('Ingrese el DNI del usuario:');
                {$I-}
-                    Gotoxy(45,1);
+                    Gotoxy(46,1);
                     readln(aux);
                {$I+}
                clrscr;
