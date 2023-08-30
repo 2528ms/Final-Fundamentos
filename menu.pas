@@ -10,7 +10,6 @@ Interface
          Procedure menu_modificar;
          Procedure menu_consultar;
          procedure consulta_turno(var arch_t:t_turnos;var arch_u:t_usuarios; nom_turno:string; nom_usuario:string); 
-         procedure consulta_usuario(var arch_t:t_turnos; var arch_u:t_usuarios; nom_usuario:string);
 var
    nombre_turno:string;
    nombre_auto:string;
@@ -202,9 +201,12 @@ Implementation
                                   writeln ('1:SI');
                                   Gotoxy (78,7);
                                   Writeln ('2:NO');
-                                  Gotoxy (50,20);
-                                  Textcolor (Blue);
-                                  Writeln ('Alumnos: Sosa Mariano - Galarza Francisco');
+                                  Gotoxy (63,14);
+                                  Textcolor (green);
+                                  writeln('Desarrollado por');
+                                  Gotoxy (55,16);
+                                  Textcolor (green);
+                                  Writeln ('Sosa Mariano - Galarza Francisco');
                                   control2:=readkey;
                                   If control2 = '1' then
                                      halt;
@@ -508,6 +510,7 @@ Implementation
                aux:integer;
                pos:integer;
                aux_patente:st20;
+               aux_dni:longint;
                validacion:integer;
             Begin
                  repeat
@@ -644,7 +647,7 @@ Implementation
                                      repeat
                                            writeln('Ingrese el DNI del Usuario que desea dar de baja: ');
                                            {$I-}
-                                                readln(aux);
+                                                readln(aux_dni);
                                            {$I+}
                                            validacion:=ioresult();
                                            if validacion<>0 then
@@ -654,7 +657,7 @@ Implementation
                                                    textcolor(white);
                                               end;
                                      until validacion=0;
-                                     busqueda_dni_usuario(arch_usuario, nombre_usuario, aux, pos);
+                                     busqueda_dni_usuario(arch_usuario, nombre_usuario, aux_dni, pos);
                                      if pos>-1 then
                                         begin
                                              baja_usuario(arch_usuario, nombre_usuario, pos);
@@ -875,8 +878,8 @@ Implementation
                  Writeln(#191'Que desea consultar?');
                  Gotoxy (47,6);
                  Writeln ('1: Turno');
-                 Gotoxy (47,10);
-                 Writeln ('2: Usuario');
+               //   Gotoxy (47,10);
+               //   Writeln ('2: Usuario');
                  Gotoxy (47,14);
                  Writeln ('3: Volver al menu principal');
                  control:=readkey;
@@ -888,12 +891,6 @@ Implementation
                                textcolor(yellow);
                                writeln('Presione enter para salir.');
                                textcolor(white);
-                               readkey;
-                               menu_principal;
-                          end;
-                      '2':begin
-                               clrscr;
-                               consulta_usuario(arch_turno, arch_usuario, nombre_usuario);
                                readkey;
                                menu_principal;
                           end;
@@ -909,7 +906,7 @@ Implementation
                      readkey;
                      clrscr;
                  End;
-                 Until (control='1') or (control='2') or (control='3');
+                 Until (control='1') or (control='3');
                  Readkey;
             End;
 
@@ -971,6 +968,12 @@ Implementation
                               begin
                                    gotoxy(60,2);
                                    writeln('Turno: ', aux);
+                                   gotoxy(60,5);
+                                   writeln('Fecha: ', reg_turno.dia_hora);
+                                   gotoxy(60,6);
+                                   writeln('Motivo: ', reg_turno.motivo);
+                                   gotoxy(60,7);
+                                   writeln('Patente: ', reg_turno.patente);
                                    gotoxy(51,3);
                                    writeln('-------------------------------------');
                                    busqueda_dni_usuario(arch_usuario, nom_usuario, reg_turno.dni_usuario, pos);
@@ -979,13 +982,13 @@ Implementation
                                              leer_usuario(arch_usuario, nom_usuario, pos, reg_usuario);
                                              if reg_usuario.estado_usuario then
                                              begin
-                                                  gotoxy(56,4);
+                                                  gotoxy(60,4);
                                                   writeln('usuario: ', reg_usuario.nombre_usuario);
                                              end
                                                   else
                                                        begin
                                                             textcolor(red);
-                                                            gotoxy(56,4);
+                                                            gotoxy(60,9);
                                                             writeln('El Usuario esta dado de baja');
                                                             textcolor(white);
                                                        end;
@@ -993,7 +996,7 @@ Implementation
                               end
                                    else
                                         begin
-                                             gotoxy(56,1);
+                                             gotoxy(60,10);
                                              textcolor(red);
                                              writeln('El turno esta dada de baja');
                                              textcolor(white);
@@ -1013,71 +1016,6 @@ Implementation
                end;
      //CONSULTA TURNO END
 
-
-
-     procedure consulta_usuario(var arch_t:t_turnos; var arch_u:t_usuarios ; nom_usuario:string);
-     var
-     reg_usua:registro_usuario;
-     aux:integer;
-     pos:integer;
-     validacion:integer;
-     begin
-          textcolor(white);
-          repeat
-               writeln('Ingrese el DNI del usuario que desea consultar:');
-               {$I-}
-                    Gotoxy(45,1);
-                    readln(aux);
-               {$I+}
-               clrscr;
-               validacion:=ioresult();
-               if validacion<>0 then
-                    begin
-                         Textcolor(red);
-                         writeln('Debe ingresar solo numeros');
-                         textcolor(white);
-                    end;
-          until validacion=0;
-          busqueda_dni_usuario(arch_usuario, nom_usuario, aux, pos);
-          if pos>-1 then
-          begin
-               leer_usuario(arch_usuario, nom_usuario, pos, reg_usua);
-               if reg_usua.estado_usuario=false then
-                    begin
-                         gotoxy(61,1);
-                         textcolor(red);
-                         writeln('El usuario esta dado de baja');
-                         textcolor(white);
-                         textcolor(yellow);
-                         writeln('Presione enter para salir.');
-                         textcolor(white);
-                         readkey;
-                         menu_consultar;
-                    end;
-               pos:=-1;
-               gotoxy(64,2);
-               writeln('Usuario: ', reg_usua.nombre_usuario);
-               gotoxy(60,3);
-               writeln('------------------------------');
-               busqueda_nombre_usuario(arch_usuario, nombre_usuario, reg_usua.nombre_usuario, pos);
-               if pos=-1 then
-                              Begin
-                                   gotoxy(61,4);
-                                   textcolor(red);
-                                   writeln('No hay ningun turno registrado con este usuario.');
-                                   textcolor(white);
-                              End;
-          end
-               else
-                    Begin
-                         textcolor (red);
-                         writeln('Este usuario no esta registrado.');
-                         writeln('Presione cualquier tecla para continuar...');
-                         Textcolor(white);
-                         readkey;
-                         menu_consultar;
-                    End;
-     end;
 
 
 begin

@@ -159,7 +159,6 @@ implementation
                                                                  y:=y+2;
                                                             end;
                                                         w:=3;
-                                                        //i:=0; esto lo cambie 10/8 revisar
                                                    end;
                                                #27:begin
                                                         exit;
@@ -185,7 +184,6 @@ implementation
                                                                  y:=y+2;
                                                             end;
                                                         w:=3;
-                                                        //i:=0; esto lo cambie el 10/8 revisar
                                                    end;
                                                #27:begin
                                                         exit;
@@ -194,8 +192,6 @@ implementation
                                     until (control='a') or (control=#27);
                                   end;
                    end;
-                   writeln('Presione ESC para salir.');
-                   gotoxy(1,1);
 
               end;
 
