@@ -10,10 +10,12 @@ Interface
          Procedure menu_modificar;
          Procedure menu_consultar;
          procedure consulta_turno(var arch_t:t_turnos;var arch_u:t_usuarios; nom_turno:string; nom_usuario:string); 
+const
+   nombre_turno:string ='arch_turno.dat';
+   nombre_auto:string = 'arch_auto.dat';
+   nombre_usuario:string = 'arch_usuario.dat';
+
 var
-   nombre_turno:string;
-   nombre_auto:string;
-   nombre_usuario:string;
    arch_turno:t_turnos;
    arch_auto:t_autos;
    arch_usuario:t_usuarios;
@@ -371,11 +373,11 @@ Implementation
                  Gotoxy (60,3);
                  Writeln(#191'Que listado desea obtener?');
                  Gotoxy (42,6);
-                 Writeln ('1: Usuarios ordenados alfabeticamente');
+                 Writeln ('1: Usuarios');
                  Gotoxy (42,10);
-                 Writeln ('2: Turnos ordenadas alfabeticamente');
+                 Writeln ('2: Turnos');
                  Gotoxy (42,14);
-                 Writeln ('3: Autos ordenados alfabeticamente');
+                 Writeln ('3: Autos');
                  Gotoxy (42,18);
                  Writeln ('4: volver al menu principal');
                  control:=readkey;
@@ -876,12 +878,10 @@ Implementation
                  End;
                  Gotoxy (61,3);
                  Writeln(#191'Que desea consultar?');
-                 Gotoxy (47,6);
+                 Gotoxy (47,8);
                  Writeln ('1: Turno');
-               //   Gotoxy (47,10);
-               //   Writeln ('2: Usuario');
-                 Gotoxy (47,14);
-                 Writeln ('3: Volver al menu principal');
+                 Gotoxy (47,12);
+                 Writeln ('2: Volver al menu principal');
                  control:=readkey;
                  case control of
                       '1':begin
@@ -894,7 +894,7 @@ Implementation
                                readkey;
                                menu_principal;
                           end;
-                      '3':Begin
+                      '2':Begin
                                clrscr;
                                menu_principal;
                           End;
@@ -906,7 +906,7 @@ Implementation
                      readkey;
                      clrscr;
                  End;
-                 Until (control='1') or (control='3');
+                 Until (control='1') or (control='2');
                  Readkey;
             End;
 
@@ -1008,7 +1008,8 @@ Implementation
                          else
                               begin
                                    textcolor(red);
-                                   writeln('Este turno no esta registrado. Presione cualquier tecla...');
+                                   writeln('Este turno no esta registrado.');
+                                   writeln('Presione cualquier tecla para volver al menu anterior');
                                    textcolor(white);
                                    readkey;
                                    menu_consultar;
@@ -1019,9 +1020,8 @@ Implementation
 
 
 begin
-     nombre_turno:='arch_turno.dat';
-     nombre_auto:='arch_auto.dat';
-     nombre_usuario:='arch_usuario.dat';
+  
+  
 End.
 
 
