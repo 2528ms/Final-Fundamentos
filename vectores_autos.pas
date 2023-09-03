@@ -3,11 +3,11 @@ unit vectores_autos;
 interface
          uses crt, archivos_autos;
          const
-              N=10;
+              N=100;
          type
              r_ordenar_autos = record
-                                   campo:string;
-                                   pos_archivo:integer;
+                                   campo:string; //Campo por el cual se va a ordenar el vector
+                                   pos_archivo:integer; //posicion real del registro dentro del archivo
                              end;
              v_autos=array[1..N] of r_ordenar_autos;
     procedure ordenar_marca_autos(var arch:t_autos; nom_arch:string; var vec:v_autos);
@@ -36,29 +36,29 @@ implementation
        lim:integer;
     begin
          pos:=0;
-         abrir_archivo_auto(arch, nom_arch);
-         lim:=filesize(arch);
+         abrir_archivo_auto(arch, nom_arch); //Abrir archivo indicado
+         lim:=filesize(arch);                //Establecer tamaño del archivo
          close(arch);
          for i:=1 to lim do
              begin
-                  leer_auto(arch, nom_arch, pos, reg);
+                  leer_auto(arch, nom_arch, pos, reg); //lee el registro en la posicion especificada dentro del archivo
                   with vec[i] do
                        begin
-                            campo:=reg.marca;
-                            pos_archivo:=pos;
+                            campo:=reg.marca; //almacena el campo marca de cada registro
+                            pos_archivo:=pos; //almacena la posicion real dentro del archivo
                        end;
                   inc(pos);
              end;
 
-         for i:=1 to lim-1 do
-             begin
-                  for j:=1 to lim-i do
+         for i:=1 to lim-1 do            //
+             begin                      //Implementamos ordenamiento burbuja
+                  for j:=1 to lim-i do //
                       begin
-                           if vec[j].campo > vec[j+1].campo then
+                           if vec[j].campo > vec[j+1].campo then // la condicion del ordenamiento es la almacenada en el atributo campo
                               begin
-                                   aux:=vec[j];
-                                   vec[j]:=vec[j+1];
-                                   vec[j+1]:=aux;
+                                   aux:=vec[j];        //
+                                   vec[j]:=vec[j+1];  //el ordenamiento se realiza sobre el vector precargado anteriormente
+                                   vec[j+1]:=aux;    //
                               end;
                       end;
              end;
@@ -83,14 +83,14 @@ implementation
                    writeln ('| Marca del auto |      Modelo      |     Patente     |        Tipo       |       Combustible    |');
                    Gotoxy (1,3);
                    Writeln ('__________________________________________________________________________________________________');
-                   for i:=1 to lim do
+                   for i:=1 to lim do //Recorremos todo el archivo
                    begin
                         if (i mod 17)<>0 then
                            begin
-                                with v[i] do
-                                     begin
-                                          leer_auto(arch, nom_arch, pos_archivo, reg);
-                                     end;
+                                with v[i] do //recoremos todo el vector ordenado previamente
+                                     begin                                             //   
+                                          leer_auto(arch, nom_arch, pos_archivo, reg); //leemos cada registro dentro del archivo en la posicion
+                                     end;                                              //que tiene almacenado el vector
                                 if (reg.estado_auto) then
                                    begin
                                         Inc (w);
