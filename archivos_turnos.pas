@@ -30,25 +30,25 @@ interface
          procedure eliminar_archivo_turno(var arch:t_turnos);
 
 implementation
-              procedure abrir_archivo_turno(var arch:t_turnos;  nom_arch:string); //Abre archivo de motivo texto en modo escritura que borra el contenido y escribe
+              procedure abrir_archivo_turno(var arch:t_turnos;  nom_arch:string); //Abre archivo con motivo de escritura o lectura
               begin
-                   assign(arch, nom_arch);
+                   assign(arch, nom_arch);         //Enlaza el archivo logico con el archivo fisico
                    {$I-}                           //{$I-} directiva para deshabilitar mensajes de error de el sistema operativo.
-                        reset(arch);
+                        reset(arch);               // Abrimos el archivo para lectura y/o escritura
                    {$I-}
                    if ioresult<>0 then
-                      rewrite(arch); //Si la directiva {$I-} devuelve un valor distinto de cero quiere decir que no existe el fichero o hay un problema.                   close(arch);
+                      rewrite(arch); //Si la directiva {$I-} devuelve un valor distinto de cero quiere decir que no existe el archivo o hay un problema. Crea el archivo
                    //close(arch);
               end;
-              procedure leer_turno(var arch:t_turnos; nom_arch:string; var pos:integer; var dato_leido:r_turno); //Lee archivo de motivo texto
+              procedure leer_turno(var arch:t_turnos; nom_arch:string; var pos:integer; var dato_leido:r_turno); //lee registro en archivo
               begin
-                   abrir_archivo_turno(arch, nom_arch);
+                   abrir_archivo_turno(arch, nom_arch); 
                    seek(arch, pos);                  //seek posiciona el puntero en la posicion que indica el segundo parametro
-                   read(arch, dato_leido);        //recorre el archivo y lee secuencialmente
+                   read(arch, dato_leido);        //lee los datos donde se posiciono el puntuero y los retorna en la segunda variable
                    close(arch);
               end;
 
-              procedure guardar_turno(var arch:t_turnos ; nom_arch:string ; var escribir_dato:r_turno); //Escribe en archivo de motivo texto
+              procedure guardar_turno(var arch:t_turnos ; nom_arch:string ; var escribir_dato:r_turno); //Escribe registro en archivo 
               var
                  reg_control:r_turno;
                  pos:integer;
@@ -57,7 +57,7 @@ implementation
                    leer_turno(arch,nom_arch, pos, reg_control);
                    abrir_archivo_turno(arch, nom_arch);
                    seek(arch, filesize(arch));
-                   if filepos(arch)=1 then
+                   if filepos(arch)=1 then //instruccion filepos devuelve la posicion actual del puntero
                       begin
                            if reg_control.codigo_turno=0 then         //
                               begin                                 // Debido a la inicializacion la posicion 0 ya esta ocupada
@@ -72,9 +72,9 @@ implementation
                       end
                          else
                              begin
-                                   seek(arch, filesize(arch));
+                                   seek(arch, filesize(arch));         //filesize devuelve la cantidad de registros que tiene el archivo, posicionamos el puntero al final del archivo
                                    write(arch, escribir_dato);         //Escribe en el archivo lo que hay en escribir dato
-                             end;         //Escribe en el archivo lo que hay en escribir dato
+                             end;         
                    close(arch);
               end;
 
@@ -382,16 +382,16 @@ implementation
               begin
                    i:=0;
                    pos := -1;
-                   abrir_archivo_turno(arch, nom_arch);
-                   while not eof(arch) do
+                   abrir_archivo_turno(arch, nom_arch);  //abrimos el archivo para lectura
+                   while not eof(arch) do                //instruccion eof devuelve true cuando se llego al final del archivo
                    begin
-                        read(arch, reg_aux);
-                        if reg_aux.codigo_turno = buscado then
+                        read(arch, reg_aux);             //leemos el archivo en la posicion que esta el puntero
+                        if reg_aux.codigo_turno = buscado then //comparamos con el campo que buscamos
                            begin
                                 pos:=i;
                            end;
-                        i:=i+1;
-                        seek(arch, i);
+                        i:=i+1;         //actualizamos variable de control
+                        seek(arch, i); //actualizamos puntero dentro del archivo
                    end;
                    close(arch);
               end;
@@ -403,16 +403,16 @@ implementation
               begin
                    i:=0;
                    pos:=-1;
-                   abrir_archivo_auto(arch, nom_arch_a);
-                   while not eof(arch) do
+                   abrir_archivo_auto(arch, nom_arch_a); //Abrir el archivo para recorrerlo
+                   while not eof(arch) do //instruccion eof devuelve true al alcanzar el final del archivo
                    begin
-                        read(arch, reg_aux);
-                        if reg_aux.patente = buscado then
+                        read(arch, reg_aux); //leemos archivo
+                        if reg_aux.patente = buscado then //realizamos comparacion
                            begin
                                 pos:=i;
                            end;
-                        i:=i+1;
-                        seek(arch, i);
+                        i:=i+1;          //actualizamos variable de control
+                        seek(arch, i);   //pasamos VC actualizada al puntero
                    end;
                    close(arch);
               end;
@@ -422,11 +422,11 @@ implementation
               var
                  reg:r_turno;
               begin
-                   leer_turno(arch, nom_arch, pos, reg);
-                   reg.estado_turno:=false;
-                   abrir_archivo_turno(arch, nom_arch);
-                   seek(arch, pos);
-                   write(arch, reg);
+                   leer_turno(arch, nom_arch, pos, reg); //leemos archivo en pos indicada
+                   reg.estado_turno:=false;              //al registro que devuelve le asignamos el estado false
+                   abrir_archivo_turno(arch, nom_arch);  //abrimos archivo para escritura
+                   seek(arch, pos);                      //posicionamos el puntero dentro del archivo
+                   write(arch, reg);                     //escribimos el registro con el nuevo valor de estado
                    close(arch);
               end;
 
@@ -513,7 +513,7 @@ implementation
           ultima_posicion:=filesize(arch)-1;  // lectura de la posicion del ultimo registro
           close(arch);                        //
           leer_turno(arch, nom_arch, ultima_posicion, reg_aux_t); //
-          reg.codigo_turno:=reg_aux_t.codigo_turno+1;                // generar codigo de obra automaticamente
+          reg.codigo_turno:=reg_aux_t.codigo_turno+1;                // generar codigo de turno automaticamente
           gotoxy(53,15);
           writeln(reg.codigo_turno);
           if posi = -1 then
@@ -536,11 +536,11 @@ implementation
                               end;
                     until validacion=0;
                     gotoxy(45,16);
-                    writeln('                                           ');//desde aca
-                  busqueda_dni_usuario(arch_u, nom_arch_u, reg.dni_usuario, posi);  
+                    writeln('                                           ');
+                  busqueda_dni_usuario(arch_u, nom_arch_u, reg.dni_usuario, posi);  //Verifica si existe el usuario para continuar
                   if posi>-1 then
                     begin
-                     leer_auto(arch_a, nom_arch_a, posi, reg_a);   // REVISAR ESTE BLOQUE PRIMERO PREGUNTA POR EL DNI Y DESPUES LEE EL AUTO
+                     leer_auto(arch_a, nom_arch_a, posi, reg_a);   // Verifica si existe el auto dado de alta para continuar
                      if reg_a.estado_auto then
                         begin
                              repeat
@@ -561,13 +561,13 @@ implementation
                              until validacion = 0;
                              gotoxy(45,16);
                              writeln('                                           ');
-                              busqueda_patente(arch_a, nom_arch_a, reg.patente, posi);//hasta aca
+                              busqueda_patente(arch_a, nom_arch_a, reg.patente, posi);// Verifica si la patente existe para continuar
                               if posi>-1 then
                                    begin
                                         leer_auto(arch_a, nom_arch_a, posi, reg_a);
                                         if reg_a.estado_auto then
                                         begin
-                                             gotoxy(45,16);//hasta aca
+                                             gotoxy(45,16);
                                              writeln('                                                         ');
                                              repeat
                                                   gotoxy(45,16);
@@ -649,7 +649,7 @@ implementation
                                    readkey;
                               end;
                end
-               else
+               {else
                     begin
                          leer_turno(arch, nom_arch, posi, reg);
                          if (reg.estado_turno) then
@@ -749,7 +749,7 @@ implementation
                                                             end;
                                    until (control = '1') or (control = #27);
                               end;
-                    end; 
+                    end; }
      end;
 
               procedure eliminar_archivo_turno(var arch:t_turnos);

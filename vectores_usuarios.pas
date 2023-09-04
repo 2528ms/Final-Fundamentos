@@ -79,7 +79,7 @@ implementation
                    lim:=filesize(arch);
                    close(arch);
                    gotoxy(21,1);
-                   writeln('Listado ordenado de Usuarios por nombre');
+                   writeln('Listado ordenado por Usuarios');
                    Gotoxy (1,2);
                    writeln ('| Nombre del Usuario |     Direccion     |      Ciudad      |      Telefono      |      DNI     |');
                    Gotoxy (1,3);
